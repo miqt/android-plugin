@@ -81,13 +81,16 @@ hook_method {
     //插桩白名单正则 .* 匹配所有
     classWhiteListRegex = [".*"]
     //是否关注jar包
-    injectJar = false
+    injectJar = true
     //是否启用
     enable = true
     //是否只是在debug运行时启用
     justDebug = false
     //自定义 hook method 接受类
-    //impl = "com.xxx.xxx"
+    //示例1，--> 默认
+    //impl = "com.miqt.pluginlib.tools.MethodHookPrint"
+    //示例2
+    impl = "com.miqt.pluginlib.tools.SampleMethodHook"
 }
 ```
 
@@ -103,6 +106,7 @@ dependencies {
 
 ```
 maven {url 'https://dl.bintray.com/miqingtang/maven'}
+jcenter()//最近提示已经过期，截止2021年7月15日我试的还能用，后面看看迁移到别的仓库
 ```
 
 接入完成build后可以查看：build\plugin 目录找到对应的日志输出。有问题欢迎提交 issues.
