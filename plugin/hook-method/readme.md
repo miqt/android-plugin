@@ -106,7 +106,13 @@ dependencies {
 
 ```
 maven {url 'https://dl.bintray.com/miqingtang/maven'}
-jcenter()//最近提示已经过期，截止2021年7月15日我试的还能用，后面看看迁移到别的仓库
+jcenter()//最近提示已经过期，截止2021年7月15日我试的还能用,后面看看迁移到别的仓库
+```
+
+还拉取不到库？
+
+```
+maven { url 'https://raw.fastgit.org/miqt/maven/master' }
 ```
 
 接入完成build后可以查看：build\plugin 目录找到对应的日志输出。有问题欢迎提交 issues.
