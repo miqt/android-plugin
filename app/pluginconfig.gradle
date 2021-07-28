@@ -1,11 +1,11 @@
-apply plugin: 'com.miqt.plugin.autotrycatch'
-AutoTryCatch {
-    buildLog = true
-    injectJar = false
-    enable = true
-    handleClass='com.asm.code.MethodHookPrint'
-    handleMethod='point'
-}
+//apply plugin: 'com.miqt.plugin.autotrycatch'
+//AutoTryCatch {
+//    buildLog = true
+//    injectJar = false
+//    enable = true
+//    handleClass='com.asm.code.MethodHookPrint'
+//    handleMethod='point'
+//}
 //apply plugin: 'com.miqt.plugin.hookmethod'
 //hook_method {
 //    classWhiteListRegex = [".*"]
@@ -20,3 +20,15 @@ AutoTryCatch {
 //    injectJar = false
 //    enable = true
 //}
+apply plugin: 'com.miqt.plugin.strmix'
+str_mix {
+    buildLog = true
+    injectJar = true
+    enable = true
+    enableMix = true
+    enableRep = true
+    key = "fdsf"
+    repTable= [
+            "str1": "str2",
+    ]
+}

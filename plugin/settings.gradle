@@ -1,8 +1,17 @@
 include ':base_plugin'
+
 include ':sample-plugin'
+
 include ':auto-trycatch'
+
 include ':hook-method-plugin'
 project(':hook-method-plugin').projectDir = new File('hook-method-plugin/hook-method-plugin')
 include ':hook-method-lib'
 project(':hook-method-lib').projectDir = new File('hook-method-plugin/hook-method-lib')
+
+include ':strmix-plugin'
+project(':strmix-plugin').projectDir = new File('strmix-plugin/strmix-plugin')
+include ':strmix-plugin-lib'
+project(':strmix-plugin-lib').projectDir = new File('strmix-plugin/strmix-plugin-lib')
+
 rootProject.name = "plugin"

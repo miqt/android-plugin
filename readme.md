@@ -7,6 +7,7 @@ Android 字节码插件集合，base_plugin 封装好了增量编译等编写插
 1. 方法前后插桩hook [hook-method](/plugin/hook-method-plugin/readme.md)
 1. 示例插件，无实际功能 [sample-plugin](/plugin/sample-plugin/readme.md)
 1. 自动try catch异常监控 [auto-trycatch](/plugin/auto-trycatch/readme.md)
+1. Java 字符串混淆/替换插件 [strmix-plugin](/plugin/strmix-plugin/readme.md)
 
 ## 基于base-plugin开发新插件：
 

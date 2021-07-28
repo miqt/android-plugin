@@ -21,6 +21,10 @@ public class Logger {
         this.name = name;
     }
 
+    String getLogFilePath(){
+        return dir+name;
+    }
+
     void init() {
         if (init) {
             return;

@@ -116,15 +116,33 @@ public abstract class BasePlugin<E extends Extension> extends Transform implemen
             getLogger().init();
         }
         try {
+            System.out.println("┌---------------------------------------------");
+            System.out.println("|The plugin [" + getName() + "] --> Start!");
+            System.out.println("|项目主页:https://github.com/miqt/android-plugin");
+            System.out.println("|联系作者:miqingtang@163.com");
+            System.out.println("└---------------------------------------------");
             beginTransform(transformInvocation);
             doTransform(transformInvocation);
             afterTransform(transformInvocation);
         } catch (Throwable e) {
             e.printStackTrace();
             getLogger().log(e);
+            System.out.println("┌---------------------------------------------");
+            System.out.println("|The plugin [" + getName() + "] --> Error!");
+            if (getExtension().buildLog) {
+                System.out.println("|log:" + getLogger().getLogFilePath());
+            }
+            System.out.println("└---------------------------------------------");
         }
 
         waitableExecutor.waitForAllTasks();
+
+        System.out.println("┌---------------------------------------------");
+        System.out.println("|The plugin [" + getName() + "] --> Done!");
+        if (getExtension().buildLog) {
+            System.out.println("|log:" + getLogger().getLogFilePath());
+        }
+        System.out.println("└---------------------------------------------");
         getLogger().release();
     }
 
@@ -251,6 +269,7 @@ public abstract class BasePlugin<E extends Extension> extends Transform implemen
                     try {
                         modifiedClassBytes = transformJar(sourceClassBytes, file, entry);
                     } catch (Throwable e) {
+                        getLogger().log(e);
                         e.printStackTrace();
                         modifiedClassBytes = sourceClassBytes;
                     }

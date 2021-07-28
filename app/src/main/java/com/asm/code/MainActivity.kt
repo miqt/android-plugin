@@ -1,6 +1,7 @@
 package com.asm.code
 
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.MainThread
 import androidx.appcompat.app.AppCompatActivity
 import com.miqt.pluginlib.annotation.HookMethod
@@ -11,6 +12,7 @@ class MainActivity : AppCompatActivity() {
         try {
             super.onCreate(savedInstanceState)
             setContentView(R.layout.activity_main)
+            Log.e("fdag","fdsafdsg")
             hello1()
             hello2()
             try {

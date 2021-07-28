@@ -1,0 +1,16 @@
+apply from: "../../plugin.gradle"
+
+dependencies {
+    implementation project(path: ':strmix-plugin-lib')
+}
+
+gradlePlugin {
+    plugins {
+        version {
+            // 在 app 模块需要通过 id 引用这个插件
+            id = 'com.miqt.plugin.strmix'
+            // 实现这个插件的类的路径
+            implementationClass = 'com.miqt.plugin.strmix.StrMixPlugin'
+        }
+    }
+}
