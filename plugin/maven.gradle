@@ -27,31 +27,31 @@ uploadArchives {
     }
 }
 
-task gitClone(){
-    if (!new File(localDir).exists()){
-        ("git clone "+git+" "+localDir).execute([],new File(localDir).getParentFile())
+task gitClone(group: 'upload') {
+    if (!new File(localDir).exists()) {
+        ("git clone " + git + " " + localDir).execute([], new File(localDir).getParentFile())
     }
 }
 
-task gitPull(type: Exec) {
+task gitPull(group: 'upload', type: Exec) {
     workingDir(new File(localDir))
     commandLine 'git', 'pull'
 }
-task gitAdd(type: Exec) {
+task gitAdd(group: 'upload', type: Exec) {
     workingDir(new File(localDir))
     commandLine 'git', 'add', '.'
 }
-task gitCommit(type: Exec) {
+task gitCommit(group: 'upload', type: Exec) {
     workingDir(new File(localDir))
     commandLine 'git', 'commit', '-m', 'update version:' + maven_version
 }
-task gitPush(type: Exec) {
+task gitPush(group: 'upload', type: Exec) {
     workingDir(new File(localDir))
-    commandLine 'git', 'push','origin'
+    commandLine 'git', 'push', 'origin'
 }
-task publish(type: Exec) {
+task publishToGitMaven(group: 'upload', type: Exec) {
     workingDir(new File(localDir))
-    commandLine 'git', 'push','gitee'
+    commandLine 'git', 'push', 'gitee'
 }
 
 //gitPull.dependsOn gitClone
@@ -59,4 +59,4 @@ uploadArchives.dependsOn gitPull
 gitAdd.dependsOn uploadArchives
 gitCommit.dependsOn gitAdd
 gitPush.dependsOn gitCommit
-publish.dependsOn gitPush
+publishToGitMaven.dependsOn gitPush
