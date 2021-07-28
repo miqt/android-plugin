@@ -1,7 +1,7 @@
 apply plugin: 'maven'
-apply plugin: 'com.github.panpf.bintray-publish'
 
-
+def git = "git@github.com:miqt/maven.git"
+def localDir = 'E:\\android_proj\\ASMCode\\plugin\\maven'
 def maven_version = "0.3.8"
 def maven_groupId = 'com.miqt'
 
@@ -14,10 +14,7 @@ def maven_artifactId = project.name
 uploadArchives {
     repositories {
         mavenDeployer {
-
-//            repository(url: uri(project.parent.rootDir.path + './repo'))
-
-            repository(url: uri('E:\\maven'))
+            repository(url: uri(localDir))
 
             pom.project {
                 name maven_artifactId
@@ -30,13 +27,31 @@ uploadArchives {
     }
 }
 
-
-//添加
-publish {
-    userOrg = 'miqingtang'//bintray.com用户名
-    groupId = maven_groupId//jcenter上的路径
-    artifactId = maven_artifactId//项目名称
-    publishVersion = maven_version//版本号
-    desc = 'https://github.com/miqt/android-plugin/tree/master/plugin'
-    website = 'https://github.com/miqt/android-plugin/tree/master/plugin'//网站，不重要
+task gitClone(){
+    if (!new File(localDir).exists()){
+        ("git clone "+git+" "+localDir).execute([],new File(localDir).getParentFile())
+    }
 }
+
+task gitPull(type: Exec) {
+    workingDir(new File(localDir))
+    commandLine 'git', 'pull'
+}
+task gitAdd(type: Exec) {
+    workingDir(new File(localDir))
+    commandLine 'git', 'add', '.'
+}
+task gitCommit(type: Exec) {
+    workingDir(new File(localDir))
+    commandLine 'git', 'commit', '-m', 'update version:' + maven_version
+}
+task gitPush(type: Exec) {
+    workingDir(new File(localDir))
+    commandLine 'git', 'push'
+}
+
+//gitPull.dependsOn gitClone
+uploadArchives.dependsOn gitPull
+gitAdd.dependsOn uploadArchives
+gitCommit.dependsOn gitAdd
+gitPush.dependsOn gitCommit
