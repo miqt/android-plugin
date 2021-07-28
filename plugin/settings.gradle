@@ -2,7 +2,7 @@ include ':base_plugin'
 include ':sample-plugin'
 include ':auto-trycatch'
 include ':hook-method-plugin'
-project(':hook-method-plugin').projectDir = new File('hook-method/hook-method-plugin')
+project(':hook-method-plugin').projectDir = new File('hook-method-plugin/hook-method-plugin')
 include ':hook-method-lib'
-project(':hook-method-lib').projectDir = new File('hook-method/hook-method-lib')
+project(':hook-method-lib').projectDir = new File('hook-method-plugin/hook-method-lib')
 rootProject.name = "plugin"

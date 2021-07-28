@@ -1,7 +1,6 @@
 这是一个 android 方法hook的插件，在方法进入和方法退出时，将当前运行的所有参数回调到固定的接口中，利用这一点，可以进行方法切片式开发，也可以进行一些耗时统计等性能优化相关的统计。
 
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-[![Download](https://api.bintray.com/packages/miqingtang/maven/pluginSrc/images/download.svg)](https://bintray.com/miqingtang/maven/pluginSrc)
 
 ## 效果展示
 原始代码：
@@ -28,7 +27,7 @@ public int add(int num1, int num2) throws InterruptedException {
 
 稍作开发就可以实现一个方法出入日志打印功能：
 
-示例1：
+示例1：`impl = "com.miqt.pluginlib.tools.MethodHookPrint"`
 
 ```
 ┌com.miqt.datacontrol.MainActivity$1@dce8636.onClick():[main]
@@ -45,7 +44,7 @@ public int add(int num1, int num2) throws InterruptedException {
 └com.miqt.datacontrol.MainActivity$1@dce8636.onClick():[7]
 ```
 
-示例2：
+示例2：`impl = "com.miqt.pluginlib.tools.SampleMethodHook"`
 
 ```
 ╔======================================================================================
@@ -65,57 +64,58 @@ public int add(int num1, int num2) throws InterruptedException {
 
 ## 使用方法
 
-项目根目录：build.gradle 添加以下代码
+1. **添加maven仓库**
 
-```groovy
-dependencies {
-    classpath 'com.miqt:hook-method-plugin:0.3.5'
-}
-```
+   ```
+   maven { url 'https://raw.githubusercontent.com/miqt/maven/master' }
+   maven { url 'https://gitee.com/miqt/maven/raw/master' }
+   ```
 
-对应 module 中启用插件，可以是`application`也可以是`library`
+   还拉取不到库？
 
-```groovy
-apply plugin: 'com.miqt.plugin.hookmethod'
-hook_method {
-    //插桩白名单正则 .* 匹配所有
-    classWhiteListRegex = [".*"]
-    //是否关注jar包
-    injectJar = true
-    //是否启用
-    enable = true
-    //是否只是在debug运行时启用
-    justDebug = false
-    //自定义 hook method 接受类
-    //示例1，--> 默认
-    //impl = "com.miqt.pluginlib.tools.MethodHookPrint"
-    //示例2
-    impl = "com.miqt.pluginlib.tools.SampleMethodHook"
-}
-```
+   ```
+   maven { url 'https://raw.fastgit.org/miqt/maven/master' }
+   ```
 
-添加类库依赖：
+   或者，去我的[仓库git地址](https://github.com/miqt/maven)下载下来，本地依赖。
 
-```groovy
-dependencies {
-    implementation 'com.miqt:hook-method-lib:0.3.5'
-}
-```
+   > 最开始我使用 `jcenter()` ，结果后来这个库官方弃用了，不过现在 0.3.5版本 仍然可以从这个库上拉取下来，之后版本我都使用gitee和github作为仓库存储地址了。
 
-如果编译不通过，请添加maven仓库：
+2. **添加插件依赖**
 
-```
-maven {url 'https://dl.bintray.com/miqingtang/maven'}
-jcenter()//最近提示已经过期，截止2021年7月15日我试的还能用,后面看看迁移到别的仓库
-```
+    项目根目录：build.gradle 添加以下代码
 
-还拉取不到库？
+    ```groovy
+    dependencies {
+        classpath 'com.miqt:hook-method-plugin:0.3.10'
+    }
+    ```
 
-```
-maven { url 'https://raw.fastgit.org/miqt/maven/master' }
-```
+    对应 module 中启用插件，可以是`application`也可以是`library`
 
-接入完成build后可以查看：build\plugin 目录找到对应的日志输出。有问题欢迎提交 issues.
+    ```groovy
+    apply plugin: 'com.miqt.plugin.hookmethod'
+    hook_method {
+        //是否关注依赖库
+        injectJar = true
+        //运行在那些编译环境
+        runVariant = "DEBUG"//"RELEASE" "ALWAYS" "NEVER"
+        //处理hook method的回调类，需要继承自
+        impl = "com.miqt.pluginlib.tools.SampleMethodHook"
+    }
+    ```
+
+3. **对应 module 中添加类库依赖**
+
+    ```groovy
+    dependencies {
+        implementation 'com.miqt:hook-method-lib:0.3.10'
+    }
+    ```
+
+    项目 clean 然后运行，logcat 过滤 `MethodHookHandler` 就可以看到打印结果啦！
+
+## 致谢
 
 >  这个插件是借鉴了很多大佬的代码，并结合自己的想法进行了一些调整，在此感谢他们付出的努力。
 >

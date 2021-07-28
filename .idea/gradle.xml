@@ -12,8 +12,8 @@
                   <project path="$PROJECT_DIR$/plugin" />
                   <project path="$PROJECT_DIR$/plugin/auto-trycatch" />
                   <project path="$PROJECT_DIR$/plugin/base_plugin" />
-                  <project path="$PROJECT_DIR$/plugin/hook-method/hook-method-lib" />
-                  <project path="$PROJECT_DIR$/plugin/hook-method/hook-method-plugin" />
+                  <project path="$PROJECT_DIR$/plugin/hook-method-plugin/hook-method-lib" />
+                  <project path="$PROJECT_DIR$/plugin/hook-method-plugin/hook-method-plugin" />
                   <project path="$PROJECT_DIR$/plugin/sample-plugin" />
                 </projects>
               </build>
@@ -32,8 +32,8 @@
             <option value="$PROJECT_DIR$/plugin" />
             <option value="$PROJECT_DIR$/plugin/auto-trycatch" />
             <option value="$PROJECT_DIR$/plugin/base_plugin" />
-            <option value="$PROJECT_DIR$/plugin/hook-method/hook-method-lib" />
-            <option value="$PROJECT_DIR$/plugin/hook-method/hook-method-plugin" />
+            <option value="$PROJECT_DIR$/plugin/hook-method-plugin/hook-method-lib" />
+            <option value="$PROJECT_DIR$/plugin/hook-method-plugin/hook-method-plugin" />
             <option value="$PROJECT_DIR$/plugin/sample-plugin" />
           </set>
         </option>

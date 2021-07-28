@@ -2,7 +2,7 @@ apply plugin: 'maven'
 
 def git = "git@github.com:miqt/maven.git"
 def localDir = 'E:\\android_proj\\ASMCode\\plugin\\maven'
-def maven_version = "0.3.8"
+def maven_version = "0.3.10"
 def maven_groupId = 'com.miqt'
 
 //下面的version和group必须有，gradle打包的pom文件依赖这个版本号和group
@@ -47,7 +47,8 @@ task gitCommit(type: Exec) {
 }
 task gitPush(type: Exec) {
     workingDir(new File(localDir))
-    commandLine 'git', 'push'
+    commandLine 'git', 'push','origin'
+    commandLine 'git', 'push','gitee'
 }
 
 //gitPull.dependsOn gitClone
