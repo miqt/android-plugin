@@ -48,6 +48,9 @@ task gitCommit(type: Exec) {
 task gitPush(type: Exec) {
     workingDir(new File(localDir))
     commandLine 'git', 'push','origin'
+}
+task publish(type: Exec) {
+    workingDir(new File(localDir))
     commandLine 'git', 'push','gitee'
 }
 
@@ -56,3 +59,4 @@ uploadArchives.dependsOn gitPull
 gitAdd.dependsOn uploadArchives
 gitCommit.dependsOn gitAdd
 gitPush.dependsOn gitCommit
+publish.dependsOn gitPush
