@@ -1,7 +1,7 @@
 apply plugin: 'maven'
 
 def git = "git@github.com:miqt/maven.git"
-def localDir = 'E:\\android_proj\\ASMCode\\plugin\\maven'
+def localDir = 'E:\\git_maven'
 def maven_version = "0.3.10"
 def maven_groupId = 'com.miqt'
 
