@@ -2,12 +2,13 @@ Android 字节码插件集合，base_plugin 封装好了增量编译等编写插
 
 可以认为是ByteX的简单版本。
 
-目前已经开发两个插件：
-1. 方法前后插桩hook[hook-method](/plugin/hook-method/readme.md)
-1. 示例插件，无实际功能[sample-plugin](/plugin/sample-plugin/readme.md)
-1. 自动try catch异常监控[auto-trycatch](/plugin/auto-trycatch/readme.md)
+## 目前已经开发以下插件：
 
-基于base-plugin开发新插件步骤：
+1. 方法前后插桩hook [hook-method](/plugin/hook-method-plugin/readme.md)
+1. 示例插件，无实际功能 [sample-plugin](/plugin/sample-plugin/readme.md)
+1. 自动try catch异常监控 [auto-trycatch](/plugin/auto-trycatch/readme.md)
+
+## 基于base-plugin开发新插件：
 
 可以直接参考 sample-plugin。
 
