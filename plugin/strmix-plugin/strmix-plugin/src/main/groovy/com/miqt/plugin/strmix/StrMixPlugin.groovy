@@ -2,15 +2,12 @@ package com.miqt.plugin.strmix
 
 import com.miqt.asm.method_hook.BasePlugin
 import org.apache.commons.io.FileUtils
-import org.apache.commons.io.IOUtils
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.ClassWriter
 
-import java.util.concurrent.Callable
 import java.util.jar.JarEntry
 import java.util.jar.JarFile
-import java.util.jar.JarOutputStream
 
 import static org.objectweb.asm.ClassReader.EXPAND_FRAMES
 
@@ -35,16 +32,21 @@ class StrMixPlugin extends BasePlugin<Config> {
 
     @Override
     byte[] transformJar(byte[] classBytes, File jarFile, JarEntry entry) {
+        if (entry.name.contains("com/miqt/strmixlib")) return
+        if (getExtension().isEnableRep()) {
+            classBytes = repStrMix(getExtension(), classBytes)
+        }
+        if (getExtension().isEnableMix()) {
+            classBytes = allStrMix(getExtension(), classBytes)
+        }
         return classBytes
     }
 
     @Override
     boolean isRemoveJarEntry(JarFile jarFile, JarEntry entry) {
-        if (jarFile.name.contains("strmix-plugin-lib")) {
-            if (entry.name.contains("StrMixConstans_v1") || entry.name.contains("StrRepConstans_v1")) {
-                getLogger().log("skip:" + entry.name)
-                return true;
-            }
+        if (entry.name.contains("StrMixConstans_v1") || entry.name.contains("StrRepConstans_v1")) {
+            getLogger().log("skip:" + entry.name)
+            return true;
         }
         return super.isRemoveJarEntry(jarFile, entry)
     }
