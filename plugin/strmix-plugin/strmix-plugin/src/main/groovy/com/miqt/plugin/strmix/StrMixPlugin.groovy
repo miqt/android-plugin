@@ -1,11 +1,16 @@
 package com.miqt.plugin.strmix
 
 import com.miqt.asm.method_hook.BasePlugin
+import org.apache.commons.io.FileUtils
+import org.apache.commons.io.IOUtils
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.ClassWriter
 
+import java.util.concurrent.Callable
 import java.util.jar.JarEntry
+import java.util.jar.JarFile
+import java.util.jar.JarOutputStream
 
 import static org.objectweb.asm.ClassReader.EXPAND_FRAMES
 
@@ -21,7 +26,6 @@ class StrMixPlugin extends BasePlugin<Config> {
     byte[] transform(byte[] classBytes, File classFile) {
         if (getExtension().isEnableRep()) {
             classBytes = repStrMix(getExtension(), classBytes)
-            getLogger().log("repStrMix classBytes size:"+classBytes.length)
         }
         if (getExtension().isEnableMix()) {
             classBytes = allStrMix(getExtension(), classBytes)
@@ -31,17 +35,34 @@ class StrMixPlugin extends BasePlugin<Config> {
 
     @Override
     byte[] transformJar(byte[] classBytes, File jarFile, JarEntry entry) {
+        return classBytes
+    }
+
+    @Override
+    boolean isRemoveJarEntry(JarFile jarFile, JarEntry entry) {
         if (jarFile.name.contains("strmix-plugin-lib")) {
-            getLogger().log("find jar strmix-plugin-lib")
-            if (entry.name == "com/miqt/strmixlib/StrMixConstans_v1.class") {
-                getLogger().log("gen StrMixConstans_v1")
-                return ClassGenerate.generateMix(getExtension())
-            } else if (entry.name == "com/miqt/strmixlib/StrRepConstans_v1.class") {
-                getLogger().log("gen StrRepConstans_v1")
-                return ClassGenerate.generateRep(getExtension())
+            if (entry.name.contains("StrMixConstans_v1") || entry.name.contains("StrRepConstans_v1")) {
+                getLogger().log("skip:" + entry.name)
+                return true;
             }
         }
-        return classBytes
+        return super.isRemoveJarEntry(jarFile, entry)
+    }
+    boolean generated = false;
+
+    @Override
+    void appendClass(File dest) {
+        super.appendClass(dest)
+        if (generated) return
+        generated = true
+        File mix = new File(dest.getAbsolutePath() + "/com/miqt/strmixlib/StrMixConstans_v1.class");
+        File rep = new File(dest.getAbsolutePath() + "/com/miqt/strmixlib/StrRepConstans_v1.class");
+        FileUtils.touch(mix)
+        FileUtils.touch(rep)
+        mix.bytes = ClassGenerate.generateMix(getExtension())
+        rep.bytes = ClassGenerate.generateRep(getExtension())
+        getLogger().log("generated " + mix.getPath() + " success!")
+        getLogger().log("generated " + rep.getPath() + " success!")
     }
 
     @Override

@@ -12,6 +12,9 @@ class Config extends Extension{
     String repImpl
     Map<String, String> repTable = [:]
 
+    Config() {
+        injectJar = true
+    }
 
     @Override
     public String toString() {

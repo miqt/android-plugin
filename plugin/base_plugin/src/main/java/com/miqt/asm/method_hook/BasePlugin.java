@@ -260,6 +260,11 @@ public abstract class BasePlugin<E extends Extension> extends Transform implemen
             while (enumeration.hasMoreElements()) {
                 JarEntry entry = enumeration.nextElement();
                 String name = entry.getName();
+
+                if (isRemoveJarEntry(jarFile,entry)){
+                    continue;
+                }
+
                 JarEntry outJarEntry = new JarEntry(name);
 
                 jarOutputStream.putNextEntry(outJarEntry);
@@ -288,6 +293,10 @@ public abstract class BasePlugin<E extends Extension> extends Transform implemen
             return null;
         });
 
+    }
+
+    public boolean isRemoveJarEntry(JarFile jarFile, JarEntry entry) {
+        return false;
     }
 
     private void eachDir(TransformInvocation transformInvocation, boolean isIncremental, DirectoryInput directoryInput) {
@@ -331,6 +340,7 @@ public abstract class BasePlugin<E extends Extension> extends Transform implemen
                     logger.log(e);
                 }
             };
+            appendClass(dest);
             //当前是否是增量编译
             if (isIncremental) {
                 directoryInput.getChangedFiles().forEach(biConsumer);
@@ -342,6 +352,10 @@ public abstract class BasePlugin<E extends Extension> extends Transform implemen
         } catch (IOException e) {
             logger.log(e);
         }
+    }
+
+    public void appendClass(File dest) {
+
     }
 
     public abstract byte[] transform(byte[] classBytes, File classFile);

@@ -11,7 +11,7 @@
 项目 build.gradle 添加
 
 ```
-classpath 'com.miqt:strmix-plugin:0.3.10'
+classpath 'com.miqt:strmix-plugin:0.3.13'
 ```
 对应模块添加依赖
 ```
