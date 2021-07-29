@@ -8,7 +8,24 @@
 - 通过配置设置字符串替换
 
 使用方法：
-项目 build.gradle 添加
+1. **添加maven仓库**
+
+   ```
+   maven { url 'https://raw.githubusercontent.com/miqt/maven/master' }
+   maven { url 'https://gitee.com/miqt/maven/raw/master' }
+   ```
+
+   还拉取不到库？
+
+   ```
+   maven { url 'https://raw.fastgit.org/miqt/maven/master' }
+   ```
+
+   或者，去我的[仓库git地址](https://github.com/miqt/maven)下载下来，本地依赖。
+
+   > 最开始我使用 `jcenter()` ，结果后来这个库官方弃用了，不过现在 0.3.5版本 仍然可以从这个库上拉取下来，之后版本我都使用gitee和github作为仓库存储地址了。
+
+2. **项目 build.gradle 添加**
 
 ```
 classpath 'com.miqt:strmix-plugin:0.3.13'
