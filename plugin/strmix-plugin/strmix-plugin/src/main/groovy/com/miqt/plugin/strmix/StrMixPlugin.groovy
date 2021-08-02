@@ -1,5 +1,8 @@
 package com.miqt.plugin.strmix
 
+import com.android.build.api.transform.QualifiedContent
+import com.android.build.gradle.internal.pipeline.TransformManager
+import com.google.common.collect.Sets
 import com.miqt.asm.method_hook.BasePlugin
 import org.apache.commons.io.FileUtils
 import org.objectweb.asm.ClassReader

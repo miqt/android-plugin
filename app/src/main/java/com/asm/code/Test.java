@@ -4,11 +4,7 @@ import java.util.Arrays;
 
 public class Test {
     public static void m1() {
-        Test.m1();
-        Test.m1();
-        Test.m1();
-        Test.m1();
-        Test.m1();
+
 
         int a = 100 + 1;
         int b = a + a;

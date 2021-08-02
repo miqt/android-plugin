@@ -234,7 +234,7 @@ public class StrRepClassVisitor extends ClassVisitor {
         if(TextUtils.isEmptyAfterTrim(value)){
             return false;
         }
-        System.out.println(value +" true");
+        System.out.println("Replace:"+value);
         return true;
     }
 

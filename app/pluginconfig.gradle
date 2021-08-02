@@ -25,10 +25,10 @@ str_mix {
     buildLog = true
     injectJar = true
     enable = true
-    enableMix = true
+    enableMix = false
     enableRep = true
     key = "fdsf"
     repTable= [
-            "str1": "str2",
+            "abc": "hello",
     ]
 }

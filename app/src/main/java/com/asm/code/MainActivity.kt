@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
         try {
             super.onCreate(savedInstanceState)
             setContentView(R.layout.activity_main)
-            Log.e("fdag","fdsafdsg")
+            Test.m1();
             hello1()
             hello2()
             try {

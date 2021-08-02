@@ -2,5 +2,5 @@ apply plugin: 'java-library'
 apply from: project.parent.rootDir.path+"/maven.gradle"
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    compileOnly fileTree(dir: 'libs', include: ['*.jar'])
 }
