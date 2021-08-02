@@ -15,7 +15,9 @@ public class StrMixWrapper {
     }
 
     public static String encode(String data, String key) {
-        return impl.encode(data, key);
+        String result = impl.encode(data, key);
+        System.out.println("[mix][key = "+key+"]["+data+"]-->["+result+"]");
+        return result;
     }
 
     public static String decode(String data, String key) {

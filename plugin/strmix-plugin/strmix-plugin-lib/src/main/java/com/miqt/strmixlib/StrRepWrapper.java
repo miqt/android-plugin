@@ -25,7 +25,9 @@ public class StrRepWrapper {
     }
 
     public static String rep(String data, Map<String, String> referenceTable, String key) {
-        return impl.rep(data, referenceTable, key);
+        String result = impl.rep(data, referenceTable, key);
+        System.out.println("[rep][key = "+key+"]["+data+"]-->["+result+"]");
+        return result;
     }
 
     public static String back(String data, Map<String, String> referenceTable, String key) {

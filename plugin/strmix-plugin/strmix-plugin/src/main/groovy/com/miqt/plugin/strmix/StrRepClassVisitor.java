@@ -29,7 +29,6 @@ public class StrRepClassVisitor extends ClassVisitor {
     private List<ClassStringField> mFinalFields = new ArrayList<>();
     private List<ClassStringField> mFields = new ArrayList<>();
 
-    private IStrRep mStrRepImpl;
     private String mClassName;
     private final String mKey;
     private final Config config;
@@ -40,7 +39,6 @@ public class StrRepClassVisitor extends ClassVisitor {
     public StrRepClassVisitor(Config config, Project project, ClassWriter cw) {
         super(Opcodes.ASM5, cw);
         this.config = config;
-        this.mStrRepImpl = new SampleStrRepImpl();
         this.mKey = config.getKey();
         this.mFogClassName = StrRepWrapper.class.getName().replace('.', '/');
     }
@@ -104,7 +102,7 @@ public class StrRepClassVisitor extends ClassVisitor {
                                 continue;
                             }
                             String originValue = field.value;
-                            String encryptValue = mStrRepImpl.rep(originValue, config.getRepTable(), mKey);
+                            String encryptValue = StrRepWrapper.rep(originValue, config.getRepTable(), mKey);
                             super.visitLdcInsn(encryptValue);
                             super.visitMethodInsn(Opcodes.INVOKESTATIC, mFogClassName, "back", "(Ljava/lang/String;)Ljava/lang/String;", false);
                             super.visitFieldInsn(Opcodes.PUTSTATIC, mClassName, field.name, ClassStringField.STRING_DESC);
@@ -117,7 +115,7 @@ public class StrRepClassVisitor extends ClassVisitor {
                         if (cst != null && cst instanceof String && canEncrypted((String) cst)) {
                             lastStashCst = (String) cst;
                             String originValue = lastStashCst;
-                            String encryptValue = mStrRepImpl.rep(originValue, config.getRepTable(), mKey);
+                            String encryptValue = StrRepWrapper.rep(originValue, config.getRepTable(), mKey);
                             super.visitLdcInsn(encryptValue);
                             super.visitMethodInsn(Opcodes.INVOKESTATIC, mFogClassName, "back", "(Ljava/lang/String;)Ljava/lang/String;", false);
                         } else {
@@ -158,7 +156,7 @@ public class StrRepClassVisitor extends ClassVisitor {
 
                         if (cst != null && cst instanceof String && canEncrypted((String) cst)) {
                             String originValue = (String) cst;
-                            String encryptValue = mStrRepImpl.rep(originValue, config.getRepTable(), mKey);
+                            String encryptValue = StrRepWrapper.rep(originValue, config.getRepTable(), mKey);
                             super.visitLdcInsn(encryptValue);
                             super.visitMethodInsn(Opcodes.INVOKESTATIC, mFogClassName, "back", "(Ljava/lang/String;)Ljava/lang/String;", false);
                         } else {
@@ -190,7 +188,7 @@ public class StrRepClassVisitor extends ClassVisitor {
                             }
 
                             String originValue = (String) cst;
-                            String encryptValue = mStrRepImpl.rep(originValue, config.getRepTable(), mKey);
+                            String encryptValue = StrRepWrapper.rep(originValue, config.getRepTable(), mKey);
                             super.visitLdcInsn(encryptValue);
                             super.visitMethodInsn(Opcodes.INVOKESTATIC, mFogClassName, "back", "(Ljava/lang/String;)Ljava/lang/String;", false);
                             return;
@@ -215,7 +213,7 @@ public class StrRepClassVisitor extends ClassVisitor {
                     continue;
                 }
                 String originValue = field.value;
-                String encryptValue = mStrRepImpl.rep(originValue, config.getRepTable(), mKey);
+                String encryptValue = StrRepWrapper.rep(originValue, config.getRepTable(), mKey);
                 mv.visitLdcInsn(encryptValue);
                 mv.visitMethodInsn(Opcodes.INVOKESTATIC, mFogClassName, "back", "(Ljava/lang/String;)Ljava/lang/String;", false);
                 mv.visitFieldInsn(Opcodes.PUTSTATIC, mClassName, field.name, ClassStringField.STRING_DESC);
@@ -234,7 +232,6 @@ public class StrRepClassVisitor extends ClassVisitor {
         if(TextUtils.isEmptyAfterTrim(value)){
             return false;
         }
-        System.out.println("Replace:"+value);
         return true;
     }
 
