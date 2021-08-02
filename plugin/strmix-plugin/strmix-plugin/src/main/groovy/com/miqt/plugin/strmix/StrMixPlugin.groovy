@@ -1,8 +1,6 @@
 package com.miqt.plugin.strmix
 
-import com.android.build.api.transform.QualifiedContent
-import com.android.build.gradle.internal.pipeline.TransformManager
-import com.google.common.collect.Sets
+
 import com.miqt.asm.method_hook.BasePlugin
 import org.apache.commons.io.FileUtils
 import org.objectweb.asm.ClassReader
@@ -24,6 +22,11 @@ class StrMixPlugin extends BasePlugin<Config> {
 
     @Override
     byte[] transform(byte[] classBytes, File classFile) {
+        if (classFile.absolutePath.contains("com\\miqt\\strmixlib")
+                ||classFile.absolutePath.contains("com/miqt/strmixlib")){
+            //自己的类库
+            return classBytes;
+        }
         if (getExtension().isEnableRep()) {
             classBytes = repStrMix(getExtension(), classBytes)
         }
@@ -58,16 +61,21 @@ class StrMixPlugin extends BasePlugin<Config> {
     @Override
     void appendClass(File dest) {
         super.appendClass(dest)
-        if (generated) return
-        generated = true
-        File mix = new File(dest.getAbsolutePath() + "/com/miqt/strmixlib/StrMixConstans_v1.class");
-        File rep = new File(dest.getAbsolutePath() + "/com/miqt/strmixlib/StrRepConstans_v1.class");
-        FileUtils.touch(mix)
-        FileUtils.touch(rep)
-        mix.bytes = ClassGenerate.generateMix(getExtension())
-        rep.bytes = ClassGenerate.generateRep(getExtension())
-        getLogger().log("generated " + mix.getPath() + " success!")
-        getLogger().log("generated " + rep.getPath() + " success!")
+        synchronized (this) {
+            if (generated) {
+                getLogger().log("generated return. " + dest.absolutePath)
+                return
+            }
+            generated = true
+            File mix = new File(dest.getAbsolutePath() + "/com/miqt/strmixlib/StrMixConstans_v1.class");
+            File rep = new File(dest.getAbsolutePath() + "/com/miqt/strmixlib/StrRepConstans_v1.class");
+            FileUtils.touch(mix)
+            FileUtils.touch(rep)
+            mix.bytes = ClassGenerate.generateMix(getExtension())
+            rep.bytes = ClassGenerate.generateRep(getExtension())
+            getLogger().log("generate " + mix.getPath() + " success!")
+            getLogger().log("generate " + rep.getPath() + " success!")
+        }
     }
 
     @Override

@@ -340,7 +340,11 @@ public abstract class BasePlugin<E extends Extension> extends Transform implemen
                     logger.log(e);
                 }
             };
-            appendClass(dest);
+            waitableExecutor.execute(() -> {
+                appendClass(dest);
+                return null;
+            });
+
             //当前是否是增量编译
             if (isIncremental) {
                 directoryInput.getChangedFiles().forEach(biConsumer);
