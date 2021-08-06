@@ -10,3 +10,7 @@ gradlePlugin {
         }
     }
 }
+dependencies {
+    //用于动态生成java代码的类库
+    implementation 'com.squareup:javapoet:1.13.0'
+}
