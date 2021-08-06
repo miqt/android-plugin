@@ -6,29 +6,40 @@
 //    handleClass='com.asm.code.MethodHookPrint'
 //    handleMethod='point'
 //}
-//apply plugin: 'com.miqt.plugin.hookmethod'
-//hook_method {
-//    classWhiteListRegex = [".*"]
-//    buildLog = true
-//    injectJar = false
-//    enable = true
-//    runVariant = "debug"
-//}
+apply plugin: 'com.miqt.plugin.hookmethod'
+hook_method {
+    classWhiteListRegex = [".*"]
+    buildLog = true
+    injectJar = false
+    enable = true
+    runVariant = "debug"
+    hookTargets {
+        aaaaaa {
+            methodName = "aaaaaa"
+        }
+        bbbbbb {
+            methodName = "bbbbbb"
+        }
+//        aaa {
+//            methodName = "a3"
+//        }
+    }
+}
 //apply plugin: 'com.miqt.plugin.sample'
 //sample_extension {
 //    buildLog = true
 //    injectJar = false
 //    enable = true
 //}
-apply plugin: 'com.miqt.plugin.strmix'
-str_mix {
-    buildLog = true
-    injectJar = true
-    enable = true
-    enableMix = false
-    enableRep = true
-    key = "fdsf"
-    repTable= [
-            "abc": "hello",
-    ]
-}
+//apply plugin: 'com.miqt.plugin.strmix'
+//str_mix {
+//    buildLog = true
+//    injectJar = true
+//    enable = true
+//    enableMix = false
+//    enableRep = true
+//    key = "fdsf"
+//    repTable= [
+//            "abc": "hello",
+//    ]
+//}

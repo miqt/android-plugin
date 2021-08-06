@@ -2,42 +2,49 @@ package com.miqt.plugin.hookmethod;
 
 import com.android.build.api.transform.TransformInvocation;
 import com.miqt.asm.method_hook.BasePlugin;
-import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.TypeSpec;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.http.util.TextUtils;
+import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Project;
+import org.gradle.api.plugins.ExtensionAware;
 import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.jar.JarEntry;
-
-import javax.lang.model.element.Modifier;
 
 import static org.objectweb.asm.ClassReader.EXPAND_FRAMES;
 
 public class HookMethodPlugin extends BasePlugin<HookMethodExtension> {
 
+    NamedDomainObjectContainer<HookTarget> hookTargets;
     @Override
     public HookMethodExtension initExtension() {
         return new HookMethodExtension();
     }
 
     @Override
+    public void apply(@NotNull Project project) {
+        super.apply(project);
+        ExtensionAware aware = (ExtensionAware) getExtension();
+        // 创建一个容器
+        hookTargets = project.container(HookTarget.class);
+        // 将容器添加为 extension
+        aware.getExtensions().add("hookTargets", hookTargets);
+    }
+
+    @Override
     protected void beginTransform(TransformInvocation transformInvocation) {
         super.beginTransform(transformInvocation);
         getLogger().log("HookMethodPlugin:start");
+        getExtension().hookTargets.addAll(hookTargets);
+        getLogger().log(getExtension().toString());
     }
 
     @Override
     protected void afterTransform(TransformInvocation transformInvocation) {
         super.afterTransform(transformInvocation);
-        getLogger().log("HookMethodPlugin:end");
     }
 
     @Override

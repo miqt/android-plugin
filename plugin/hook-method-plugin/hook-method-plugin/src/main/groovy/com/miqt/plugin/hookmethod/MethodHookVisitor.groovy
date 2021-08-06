@@ -116,7 +116,7 @@ class MethodHookVisitor extends ClassVisitor {
                                 "[Ljava/lang/Object;" +
                                 ")V",
                         false)
-                plugin.getLogger().log("\t[MethodEnter]" + className + name)
+                plugin.getLogger().log("\t[MethodEnter]" + className + "." + name)
                 super.onMethodEnter()
             }
 
@@ -148,7 +148,7 @@ class MethodHookVisitor extends ClassVisitor {
                                     "[Ljava/lang/Object;" +//prams
                                     ")V",
                             false)
-                        plugin.getLogger().log("\t[MethodExit]" + className + name)
+                    plugin.getLogger().log("\t[MethodExit]" + className + "." + name)
                 } else if (opcode == RETURN) {
                     mv.visitInsn(ACONST_NULL)
                     getArgs()

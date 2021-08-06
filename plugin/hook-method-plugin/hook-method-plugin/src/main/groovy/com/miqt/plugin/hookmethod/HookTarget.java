@@ -1,22 +1,27 @@
 package com.miqt.plugin.hookmethod;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
 public class HookTarget {
-    private int access = -1;//方法的访问权限
-    private String interfaces;//继承类
-    private String superName;//所在父类
-    private String className;//方法所在的类名
-    private String methodName;//方法名称
-    private String descriptor;//方法参数和返回值字段描述符
-    private String annotation;//方法上的注解
-    private String signature;//方法参数或返回值为泛型
-    private String[] exceptions;//方法抛出那些异常
-    private int hookTiming = Enter | Return;//是在方法进入时hook还是退出时
+    public String name;
+    public int access = -1;//方法的访问权限
+    public String interfaces;//继承类
+    public String superName;//所在父类
+    public String className;//方法所在的类名
+    public String methodName;//方法名称
+    public String descriptor;//方法参数和返回值字段描述符
+    public String annotation;//方法上的注解
+    public String signature;//方法参数或返回值为泛型
+    public String[] exceptions;//方法抛出那些异常
+    public int hookTiming = Enter | Return;//是在方法进入时hook还是退出时
     public final static int Enter = 1 << 1;//方法进入
     public final static int Return = 1 << 2;//方法退出
 
+    public HookTarget(String name) {
+        this.name = name;
+    }
     public HookTarget() {
     }
 
@@ -142,10 +147,10 @@ public class HookTarget {
         if (!isEmpty(this.superName) && !this.superName.equals(superName)) {
             return false;
         }
-        if (!isEmpty(this.className) && !Pattern.matches(className, className)) {
+        if (!isEmpty(this.className) && !Pattern.matches(this.className, className)) {
             return false;
         }
-        if (!isEmpty(this.methodName) && !Pattern.matches(methodName, methodName)) {
+        if (!isEmpty(this.methodName) && !Pattern.matches(this.methodName, methodName)) {
             return false;
         }
         if (!isEmpty(this.descriptor) && !this.descriptor.equals(descriptor)) {
@@ -183,4 +188,21 @@ public class HookTarget {
         return value == null || value.equals("");
     }
 
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("HookTarget{");
+        sb.append("access=").append(access);
+        sb.append(", interfaces='").append(interfaces).append('\'');
+        sb.append(", superName='").append(superName).append('\'');
+        sb.append(", className='").append(className).append('\'');
+        sb.append(", methodName='").append(methodName).append('\'');
+        sb.append(", descriptor='").append(descriptor).append('\'');
+        sb.append(", annotation='").append(annotation).append('\'');
+        sb.append(", signature='").append(signature).append('\'');
+        sb.append(", exceptions=").append(exceptions == null ? "null" : Arrays.asList(exceptions).toString());
+        sb.append(", hookTiming=").append(hookTiming);
+        sb.append('}');
+        return sb.toString();
+    }
 }

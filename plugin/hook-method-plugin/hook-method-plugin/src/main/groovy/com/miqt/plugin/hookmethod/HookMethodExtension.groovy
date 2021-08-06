@@ -14,35 +14,28 @@ public class HookMethodExtension extends Extension {
     public String impl = "";
 
     public HookMethodExtension() {
-//        this.extensions.create("defaultConfig", DefaultConfig, "defaultConfig")
         hookTargets.add(new HookTarget().setAnnotation("Lcom/miqt/pluginlib/annotation/HookMethod;"));
         hookTargets.add(new HookTarget().setAnnotation("Lcom/miqt/pluginlib/annotation/HookMethodInherited;"));
     }
 
-    @Override
-    public String toString() {
-        return "HookMethodExtension{" +
-                "classWhiteListRegex=" + classWhiteListRegex +
-                ", impl='" + impl + '\'' +
-                ", enable=" + enable +
-                ", runVariant=" + runVariant +
-                ", injectJar=" + injectJar +
-                ", buildLog=" + buildLog +
-                '}';
-    }
+
 
     @Override
     public String getExtensionName() {
         return "hook_method";
     }
 
-
-    public class DefaultConfig {
-        String applicationId
-        int minSdkVersion
-        int targetSdkVersion
-        public DefaultConfig(String name) {
-            println "name = " + name
-        }
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("HookMethodExtension{");
+        sb.append("classWhiteListRegex=").append(classWhiteListRegex);
+        sb.append(", hookTargets=").append(hookTargets);
+        sb.append(", impl='").append(impl).append('\'');
+        sb.append(", enable=").append(enable);
+        sb.append(", runVariant='").append(runVariant).append('\'');
+        sb.append(", injectJar=").append(injectJar);
+        sb.append(", buildLog=").append(buildLog);
+        sb.append('}');
+        return sb.toString();
     }
 }
