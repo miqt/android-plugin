@@ -11,7 +11,7 @@ public class HookMethodExtension extends Extension {
     public List<String> classWhiteListRegex = new ArrayList<>();
     public List<HookTarget> hookTargets = new ArrayList<>();
     //方法hook调用实现类
-    public String impl = "";
+    public String impl = "com.miqt.hookplugin.HookHandler";
 
     public HookMethodExtension() {
         hookTargets.add(new HookTarget().setAnnotation("Lcom/miqt/pluginlib/annotation/HookMethod;"));

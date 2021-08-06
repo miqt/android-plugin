@@ -13,6 +13,7 @@ hook_method {
     injectJar = false
     enable = true
     runVariant = "debug"
+    impl = "xxx.xxx.aaa"
     hookTargets {
         aaaaaa {
             methodName = "aaaaaa"

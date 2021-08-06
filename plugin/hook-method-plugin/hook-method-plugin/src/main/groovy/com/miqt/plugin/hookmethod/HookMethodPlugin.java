@@ -2,7 +2,11 @@ package com.miqt.plugin.hookmethod;
 
 import com.android.build.api.transform.TransformInvocation;
 import com.miqt.asm.method_hook.BasePlugin;
+import com.squareup.javapoet.JavaFile;
+import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.TypeSpec;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.http.util.TextUtils;
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Project;
@@ -12,7 +16,10 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.jar.JarEntry;
+
+import javax.lang.model.element.Modifier;
 
 import static org.objectweb.asm.ClassReader.EXPAND_FRAMES;
 
@@ -32,6 +39,44 @@ public class HookMethodPlugin extends BasePlugin<HookMethodExtension> {
         hookTargets = project.container(HookTarget.class);
         // 将容器添加为 extension
         aware.getExtensions().add("hookTargets", hookTargets);
+        project.afterEvaluate(project1 -> {
+            if (getExtension().impl == null || "".equals(getExtension().impl)) {
+                return;
+            }
+            String filePath = getExtension().impl.replace(".", "/") + ".java";
+            String dir = project.getProjectDir() + "/src/main/java/";
+            try {
+                File file = new File(dir, filePath);
+                if (file.exists()) {
+                    //生成过了
+                   // return;
+                }
+                String className = file.getName().replace(".java", "");
+                String packageName = getExtension().impl.replace("." + className, "");
+
+                TypeSpec.Builder helloWorld = TypeSpec.classBuilder(className)
+                        .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+                        .addJavadoc("This class generate by Hook Method Plugin." +
+                                "\nIts function is to receive the forwarding of the intercepted method. You can add processing logic to the generated method." +
+                                "Have fun!" +
+                                "\nproject page:https://github.com/miqt/android-plugin" +
+                                "\n@author miqingtang@163.com");
+                for (HookTarget hookTarget : hookTargets) {
+                    MethodSpec main = MethodSpec.methodBuilder(hookTarget.methodName)
+                            .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+                            .returns(void.class)
+                            .addParameter(Object[].class, "args")
+                            .build();
+                    helloWorld.addMethod(main);
+                }
+                JavaFile javaFile = JavaFile.builder(packageName, helloWorld.build())
+                        .build();
+                FileUtils.write(file, javaFile.toString(), false);
+            } catch (IOException e) {
+                System.out.println(e);
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
