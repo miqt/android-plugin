@@ -38,7 +38,8 @@ class StrMixPlugin extends BasePlugin<Config> {
 
     @Override
     byte[] transformJar(byte[] classBytes, File jarFile, JarEntry entry) {
-        if (entry.name.contains("com/miqt/strmixlib")) return
+        if (entry.name.contains("com/miqt/strmixlib"))
+            return classBytes
         if (getExtension().isEnableRep()) {
             classBytes = repStrMix(getExtension(), classBytes)
         }

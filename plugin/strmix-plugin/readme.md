@@ -43,9 +43,9 @@ str_mix {
     enable = true
     enableMix = true
     enableRep = true
-    key = "hello"
+    key = "混淆加密key"
     repTable= [
-            "str1": "str2",
+            "被替换字符串": "替换为的字符串",
     ]
 }
 ```
