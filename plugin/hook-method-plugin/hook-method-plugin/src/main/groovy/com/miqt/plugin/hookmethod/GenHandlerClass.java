@@ -14,17 +14,16 @@ import org.objectweb.asm.Type;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.UUID;
 
 import javax.lang.model.element.Modifier;
 
 public class GenHandlerClass {
 
-    private static String classDoc = "This class generate by Hook Method Plugin." +
+    private static final String classDoc = "This class generate by Hook Method Plugin." +
             "\nIts function is to receive the forwarding of the intercepted method. " +
             "\nYou can add processing logic to the generated method." +
             "Have fun!" +
+            "\nEach time you add a hook point, manually merge the new method in the latest ‘.tmp’ file after rebuild"+
             "\nproject page:https://github.com/miqt/android-plugin" +
             "\n@author miqingtang@163.com";
 
@@ -64,6 +63,7 @@ public class GenHandlerClass {
             return;
         }
         MethodSpec.Builder method = genMethodDOc(hookTarget, hookTarget.getReturnMethodName());
+        method.addParameter(Object.class, "returnObj");
         method.addParameter(Object.class, "thisObj");
         method.addParameter(String.class, "className");
         method.addParameter(String.class, "methodName");
@@ -78,7 +78,6 @@ public class GenHandlerClass {
             return;
         }
         MethodSpec.Builder method = genMethodDOc(hookTarget, hookTarget.getEnterMethodName());
-        method.addParameter(Object.class, "returnObj");
         method.addParameter(Object.class, "thisObj");
         method.addParameter(String.class, "className");
         method.addParameter(String.class, "methodName");

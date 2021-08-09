@@ -106,7 +106,7 @@ class MethodHookVisitor extends ClassVisitor {
                     return
                 }
                 getArgs()
-                mv.visitMethodInsn(INVOKESTATIC, config.impl,
+                mv.visitMethodInsn(INVOKESTATIC,  config.impl.replace(".","/"),
                         target.getEnterMethodName(),
                         "(" +
                                 "Ljava/lang/Object;" +
@@ -140,7 +140,7 @@ class MethodHookVisitor extends ClassVisitor {
                     }
                     ClassUtils.autoBox(mv, returnType)
                     getArgs()
-                    mv.visitMethodInsn(INVOKESTATIC, config.impl,
+                    mv.visitMethodInsn(INVOKESTATIC,  config.impl.replace(".","/"),
                             target.getReturnMethodName(),
                             "(" +
                                     "Ljava/lang/Object;" + //return
@@ -157,7 +157,7 @@ class MethodHookVisitor extends ClassVisitor {
                 } else if (opcode == RETURN) {
                     mv.visitInsn(ACONST_NULL)
                     getArgs()
-                    mv.visitMethodInsn(INVOKESTATIC, config.impl,
+                    mv.visitMethodInsn(INVOKESTATIC, config.impl.replace(".","/"),
                             target.getReturnMethodName(),
                             "(" +
                                     "Ljava/lang/Object;" + //return
