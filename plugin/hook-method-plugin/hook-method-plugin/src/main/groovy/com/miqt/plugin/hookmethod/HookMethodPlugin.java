@@ -14,6 +14,7 @@ import org.gradle.api.plugins.ExtensionAware;
 import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Type;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,39 +44,8 @@ public class HookMethodPlugin extends BasePlugin<HookMethodExtension> {
             if (getExtension().impl == null || "".equals(getExtension().impl)) {
                 return;
             }
-            String filePath = getExtension().impl.replace(".", "/") + ".java";
-            String dir = project.getProjectDir() + "/src/main/java/";
-            try {
-                File file = new File(dir, filePath);
-                if (file.exists()) {
-                    //生成过了
-                   // return;
-                }
-                String className = file.getName().replace(".java", "");
-                String packageName = getExtension().impl.replace("." + className, "");
-
-                TypeSpec.Builder helloWorld = TypeSpec.classBuilder(className)
-                        .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
-                        .addJavadoc("This class generate by Hook Method Plugin." +
-                                "\nIts function is to receive the forwarding of the intercepted method. You can add processing logic to the generated method." +
-                                "Have fun!" +
-                                "\nproject page:https://github.com/miqt/android-plugin" +
-                                "\n@author miqingtang@163.com");
-                for (HookTarget hookTarget : hookTargets) {
-                    MethodSpec main = MethodSpec.methodBuilder(hookTarget.methodName)
-                            .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
-                            .returns(void.class)
-                            .addParameter(Object[].class, "args")
-                            .build();
-                    helloWorld.addMethod(main);
-                }
-                JavaFile javaFile = JavaFile.builder(packageName, helloWorld.build())
-                        .build();
-                FileUtils.write(file, javaFile.toString(), false);
-            } catch (IOException e) {
-                System.out.println(e);
-                e.printStackTrace();
-            }
+            getExtension().hookTargets.addAll(hookTargets);
+            GenHandlerClass.genHandlerClass(getExtension(),project);
         });
     }
 
@@ -83,7 +53,6 @@ public class HookMethodPlugin extends BasePlugin<HookMethodExtension> {
     protected void beginTransform(TransformInvocation transformInvocation) {
         super.beginTransform(transformInvocation);
         getLogger().log("HookMethodPlugin:start");
-        getExtension().hookTargets.addAll(hookTargets);
         getLogger().log(getExtension().toString());
     }
 

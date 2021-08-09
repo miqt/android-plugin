@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class HookTarget {
-    public String name;
+    public String name = "Preset";
     public int access = -1;//方法的访问权限
     public String interfaces;//继承类
     public String superName;//所在父类
@@ -191,18 +191,35 @@ public class HookTarget {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("HookTarget{");
-        sb.append("access=").append(access);
-        sb.append(", interfaces='").append(interfaces).append('\'');
-        sb.append(", superName='").append(superName).append('\'');
-        sb.append(", className='").append(className).append('\'');
-        sb.append(", methodName='").append(methodName).append('\'');
-        sb.append(", descriptor='").append(descriptor).append('\'');
-        sb.append(", annotation='").append(annotation).append('\'');
-        sb.append(", signature='").append(signature).append('\'');
-        sb.append(", exceptions=").append(exceptions == null ? "null" : Arrays.asList(exceptions).toString());
-        sb.append(", hookTiming=").append(hookTiming);
+        final StringBuffer sb = new StringBuffer(name + "{\n\t\t");
+        sb.append("access=").append(access).append("\n\t\t");
+        if (interfaces != null)
+            sb.append("interfaces=").append(interfaces).append("\n\t\t");
+        if (superName != null)
+            sb.append("superName=").append(superName).append("\n\t\t");
+        if (className != null)
+            sb.append("className=").append(className).append("\n\t\t");
+        if (methodName != null)
+            sb.append("methodName=").append(methodName).append("\n\t\t");
+        if (descriptor != null)
+            sb.append("descriptor=").append(descriptor).append("\n\t\t");
+        if (annotation != null)
+            sb.append("annotation=").append(annotation).append("\n\t\t");
+        if (signature != null)
+            sb.append("signature=").append(signature).append("\n\t\t");
+        if (exceptions != null)
+            sb.append("exceptions=").append(Arrays.asList(exceptions).toString()).append("\n\t\t");
+        sb.append("hookTiming=").append(hookTiming).append("\n\t");
         sb.append('}');
         return sb.toString();
+    }
+
+
+    public String getEnterMethodName() {
+        return name+"Enter";
+    }
+
+    public String getReturnMethodName() {
+        return name+"Return";
     }
 }

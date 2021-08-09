@@ -15,15 +15,11 @@ hook_method {
     runVariant = "debug"
     impl = "xxx.xxx.aaa"
     hookTargets {
-        aaaaaa {
-            methodName = "aaaaaa"
+        hook_onclick {
+            interfaces = "Landroid/view/View\$OnClickListener;"
+            methodName = "onClick"
+            descriptor = "(Landroid/view/View;)V"
         }
-        bbbbbb {
-            methodName = "bbbbbb"
-        }
-//        aaa {
-//            methodName = "a3"
-//        }
     }
 }
 //apply plugin: 'com.miqt.plugin.sample'

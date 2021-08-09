@@ -1,10 +1,6 @@
-package com.miqt.plugin.hookmethod;
+package com.miqt.plugin.hookmethod
 
-import com.miqt.asm.method_hook.Extension;
-
-
-import java.util.ArrayList;
-import java.util.List;
+import com.miqt.asm.method_hook.Extension
 
 public class HookMethodExtension extends Extension {
     //类名称白名单
@@ -14,8 +10,8 @@ public class HookMethodExtension extends Extension {
     public String impl = "com.miqt.hookplugin.HookHandler";
 
     public HookMethodExtension() {
-        hookTargets.add(new HookTarget().setAnnotation("Lcom/miqt/pluginlib/annotation/HookMethod;"));
-        hookTargets.add(new HookTarget().setAnnotation("Lcom/miqt/pluginlib/annotation/HookMethodInherited;"));
+        hookTargets.add(new HookTarget("annotationHookMethod").setAnnotation("Lcom/miqt/pluginlib/annotation/HookMethod;"));
+        hookTargets.add(new HookTarget("annotationHookMethodInherited").setAnnotation("Lcom/miqt/pluginlib/annotation/HookMethodInherited;"));
     }
 
 
