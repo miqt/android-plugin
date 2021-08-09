@@ -53,6 +53,25 @@ class MethodHookVisitor extends ClassVisitor {
                        String hookTiming,
                        boolean isIgnoreMethodHook
     ) {
+        if (methodAnnotation.contains("Lcom/miqt/pluginlib/annotation/HookInfo;")
+                || classAnnotation.contains("Lcom/miqt/pluginlib/annotation/HookInfo;")) {
+            def hookinfo =
+                    ("\n[HookInfo]:" +
+                            "\n\taccess = " + access +
+                            "\n\tinterfaces = " + interfaces +
+                            "\n\tsuperName = " + superName +
+                            "\n\tclassName = " + className +
+                            "\n\tmethodName = " + methodName +
+                            "\n\tdescriptor = " + descriptor +
+                            "\n\tmethodAnnotation = " + methodAnnotation +
+                            "\n\tclassAnnotation = " + classAnnotation +
+                            "\n\tsignature = " + signature +
+                            "\n\texceptions = " + exceptions +
+                            "\n\thookTiming = " + hookTiming +
+                            "\n\tisIgnoreMethodHook = " + isIgnoreMethodHook)
+            plugin.getLogger().log(hookinfo)
+            print(hookinfo)
+        }
         if (isIgnoreMethodHook) {
             return null
         }

@@ -8,17 +8,16 @@
 //}
 apply plugin: 'com.miqt.plugin.hookmethod'
 hook_method {
-    classWhiteListRegex = [".*"]
     buildLog = true
     injectJar = false
     enable = true
     runVariant = "debug"
-    impl = "xxx.xxx.aaa"
     hookTargets {
         hook_onclick {
             interfaces = "android/view/View\$OnClickListener"
             methodName = "onClick"
             descriptor = "(Landroid/view/View;)V"
+            hookTiming = "Enter"
         }
     }
 }

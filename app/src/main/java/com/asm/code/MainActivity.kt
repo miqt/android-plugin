@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.util.Log
 import androidx.annotation.MainThread
 import androidx.appcompat.app.AppCompatActivity
+import com.miqt.pluginlib.annotation.HookInfo
 import com.miqt.pluginlib.annotation.HookMethod
 import com.miqt.pluginlib.annotation.IgnoreMethodHook
 
 class MainActivity : AppCompatActivity() {
+    @HookInfo
     override fun onCreate(savedInstanceState: Bundle?) {
         try {
             super.onCreate(savedInstanceState)

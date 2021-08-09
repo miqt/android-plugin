@@ -3,8 +3,6 @@ package com.miqt.plugin.hookmethod
 import com.miqt.asm.method_hook.Extension
 
 public class HookMethodExtension extends Extension {
-    //类名称白名单
-    public List<String> classWhiteListRegex = new ArrayList<>();
     public List<HookTarget> hookTargets = new ArrayList<>();
     //方法hook调用实现类
     public String impl = "com.miqt.hookplugin.HookHandler";
@@ -24,7 +22,6 @@ public class HookMethodExtension extends Extension {
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("HookMethodExtension{");
-        sb.append("classWhiteListRegex=").append(classWhiteListRegex);
         sb.append(", hookTargets=").append(hookTargets);
         sb.append(", impl='").append(impl).append('\'');
         sb.append(", enable=").append(enable);
