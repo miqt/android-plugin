@@ -1,8 +1,10 @@
 package com.asm.code;
 
+import android.view.View;
+
 import java.util.Arrays;
 
-public class Test {
+public class Test implements View.OnClickListener {
     public static void m1() {
 
 
@@ -23,5 +25,10 @@ public class Test {
         char[] value = new char[100];
         Arrays.fill(value, '┆');
         return new String(value);
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }

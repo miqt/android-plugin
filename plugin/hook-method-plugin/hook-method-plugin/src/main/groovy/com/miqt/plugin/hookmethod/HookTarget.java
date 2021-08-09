@@ -15,13 +15,14 @@ public class HookTarget {
     public String annotation;//方法上的注解
     public String signature;//方法参数或返回值为泛型
     public String[] exceptions;//方法抛出那些异常
-    public int hookTiming = Enter | Return;//是在方法进入时hook还是退出时
-    public final static int Enter = 1 << 1;//方法进入
-    public final static int Return = 1 << 2;//方法退出
+    public String hookTiming = "Enter|Return";//"Enter"|"Return";//是在方法进入时hook还是退出时
+    public static final String Enter = "Enter";
+    public static final String Return = "Return";
 
     public HookTarget(String name) {
         this.name = name;
     }
+
     public HookTarget() {
     }
 
@@ -106,21 +107,13 @@ public class HookTarget {
         return this;
     }
 
-    public int getHookTiming() {
+    public String getHookTiming() {
         return hookTiming;
     }
 
-    public HookTarget setHookTiming(int hookTiming) {
+    public HookTarget setHookTiming(String hookTiming) {
         this.hookTiming = hookTiming;
         return this;
-    }
-
-    public static int getEnter() {
-        return Enter;
-    }
-
-    public static int getReturn() {
-        return Return;
     }
 
     boolean isMatch(int access,//方法的访问权限
@@ -133,7 +126,7 @@ public class HookTarget {
                     List<String> classAnnotation,//方法上的注解
                     String signature,//方法参数或返回值为泛型
                     String[] exceptions,//方法抛出那些异常
-                    int hookTiming
+                    String hookTiming
     ) {
         if (this.access != -1 && this.access != access) {
             return false;
@@ -178,7 +171,7 @@ public class HookTarget {
             }
         }
 
-        if ((hookTiming & this.hookTiming) == 0) {
+        if (!this.hookTiming.contains(hookTiming)) {
             return false;
         }
         return true;

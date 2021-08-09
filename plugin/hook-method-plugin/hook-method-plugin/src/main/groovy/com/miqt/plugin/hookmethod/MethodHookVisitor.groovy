@@ -40,21 +40,21 @@ class MethodHookVisitor extends ClassVisitor {
         return super.visitAnnotation(descriptor, visible)
     }
 
-    boolean isMatch(int access = -1,//方法的访问权限
-                    String[] interfaces,//继承类
-                    String superName,//所在父类
-                    String className,//方法所在的类名
-                    String methodName,//方法名称
-                    String descriptor,//方法参数和返回值字段描述符
-                    List<String> methodAnnotation,//方法上的注解
-                    List<String> classAnnotation,//方法上的注解
-                    String signature,//方法参数或返回值为泛型
-                    String[] exceptions,//方法抛出那些异常
-                    int hookTiming,
-                    boolean isIgnoreMethodHook
+    HookTarget isMatch(int access = -1,//方法的访问权限
+                       String[] interfaces,//继承类
+                       String superName,//所在父类
+                       String className,//方法所在的类名
+                       String methodName,//方法名称
+                       String descriptor,//方法参数和返回值字段描述符
+                       List<String> methodAnnotation,//方法上的注解
+                       List<String> classAnnotation,//方法上的注解
+                       String signature,//方法参数或返回值为泛型
+                       String[] exceptions,//方法抛出那些异常
+                       String hookTiming,
+                       boolean isIgnoreMethodHook
     ) {
         if (isIgnoreMethodHook) {
-            return false
+            return null
         }
         List<HookTarget> targets = plugin.getExtension().hookTargets;
         for (i in 0..<targets.size()) {
@@ -62,10 +62,10 @@ class MethodHookVisitor extends ClassVisitor {
                     access, interfaces, superName, className,
                     methodName, descriptor, methodAnnotation, classAnnotation,
                     signature, exceptions, hookTiming)) {
-                return true
+                return targets.get(i)
             }
         }
-        return false
+        return null
     }
 
     @Override
@@ -99,14 +99,15 @@ class MethodHookVisitor extends ClassVisitor {
 
             @Override
             protected synchronized void onMethodEnter() {
-                if (!isMatch(access, interfaces, superName, className,
+                HookTarget target = isMatch(access, interfaces, superName, className,
                         name, descriptor, methodAnnotation, classAnnotation,
-                        signature, exceptions, HookTarget.Enter, isIgnoreMethodHook)) {
+                        signature, exceptions, HookTarget.Enter, isIgnoreMethodHook)
+                if (target == null) {
                     return
                 }
                 getArgs()
-                mv.visitMethodInsn(INVOKESTATIC, "com/miqt/pluginlib/tools/MethodHookHandler",
-                        "enter",
+                mv.visitMethodInsn(INVOKESTATIC, config.impl,
+                        target.getEnterMethodName(),
                         "(" +
                                 "Ljava/lang/Object;" +
                                 "Ljava/lang/String;" +
@@ -116,15 +117,18 @@ class MethodHookVisitor extends ClassVisitor {
                                 "[Ljava/lang/Object;" +
                                 ")V",
                         false)
-                plugin.getLogger().log("\t[MethodEnter]" + className + "." + name)
+                plugin.getLogger().log("\t[MethodEnter]" + className + "." + name +
+                        "\n\t\t-->" + config.impl + "." + target.getEnterMethodName())
+
                 super.onMethodEnter()
             }
 
             @Override
             protected synchronized void onMethodExit(int opcode) {
-                if (!isMatch(access, interfaces, superName, className,
+                HookTarget target = isMatch(access, interfaces, superName, className,
                         name, descriptor, methodAnnotation, classAnnotation,
-                        signature, exceptions, HookTarget.Return, isIgnoreMethodHook)) {
+                        signature, exceptions, HookTarget.Return, isIgnoreMethodHook)
+                if (target == null) {
                     return
                 }
                 //有返回值的装载返回值参数，无返回值的装载null
@@ -136,8 +140,8 @@ class MethodHookVisitor extends ClassVisitor {
                     }
                     ClassUtils.autoBox(mv, returnType)
                     getArgs()
-                    mv.visitMethodInsn(INVOKESTATIC, "com/miqt/pluginlib/tools/MethodHookHandler",
-                            "exit",
+                    mv.visitMethodInsn(INVOKESTATIC, config.impl,
+                            target.getReturnMethodName(),
                             "(" +
                                     "Ljava/lang/Object;" + //return
                                     "Ljava/lang/Object;" + //this
@@ -148,12 +152,13 @@ class MethodHookVisitor extends ClassVisitor {
                                     "[Ljava/lang/Object;" +//prams
                                     ")V",
                             false)
-                    plugin.getLogger().log("\t[MethodExit]" + className + "." + name)
+                    plugin.getLogger().log("\t[MethodReturn]" + className + "." + name +
+                            "\n\t\t-->" + config.impl + "." + target.getReturnMethodName())
                 } else if (opcode == RETURN) {
                     mv.visitInsn(ACONST_NULL)
                     getArgs()
-                    mv.visitMethodInsn(INVOKESTATIC, "com/miqt/pluginlib/tools/MethodHookHandler",
-                            "exit",
+                    mv.visitMethodInsn(INVOKESTATIC, config.impl,
+                            target.getReturnMethodName(),
                             "(" +
                                     "Ljava/lang/Object;" + //return
                                     "Ljava/lang/Object;" + //this
@@ -164,7 +169,8 @@ class MethodHookVisitor extends ClassVisitor {
                                     "[Ljava/lang/Object;" +//prams
                                     ")V",
                             false)
-                        plugin.getLogger().log("\t[MethodExit]" + className + name)
+                    plugin.getLogger().log("\t[MethodReturn]" + className + "." + name +
+                            "\n\t\t-->" + config.impl + "." + target.getReturnMethodName())
                 }
 
 

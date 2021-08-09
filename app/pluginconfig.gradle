@@ -16,7 +16,7 @@ hook_method {
     impl = "xxx.xxx.aaa"
     hookTargets {
         hook_onclick {
-            interfaces = "Landroid/view/View\$OnClickListener;"
+            interfaces = "android/view/View\$OnClickListener"
             methodName = "onClick"
             descriptor = "(Landroid/view/View;)V"
         }
