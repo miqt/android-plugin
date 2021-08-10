@@ -21,24 +21,30 @@ public class GenHandlerClass {
     private static final String classDoc = "This class generate by Hook Method Plugin." +
             "\nIts function is to receive the forwarding of the intercepted method. " +
             "\nYou can add processing logic to the generated method." +
-            "Have fun!" +
-            "\nEach time you add a hook point, manually merge the new method in the latest ‘.tmp’ file after rebuild"+
-            "\nproject page:https://github.com/miqt/android-plugin" +
-            "\n@author miqingtang@163.com";
+            "\nHave fun!" +
+            "\nEach time you add a hook point, manually merge the new method in the latest ‘xxx.java.new’ file after rebuild"+
+            "\n" +
+            "\n@see <a href=\"https://github.com/miqt/android-plugin\">miqt/android-plugin</a>" +
+            "\n@author miqingtang@163.com" +
+            "\n" +
+            "\nhandler method list:";
 
     static void genHandlerClass(HookMethodExtension extension, @NotNull Project project) {
         String filePath = extension.handler.replace(".", "/") + ".java";
         String dir = project.getProjectDir() + "/src/main/java/";
+        if (extension.handlerDir != null) {
+            dir = extension.handlerDir;
+        }
         try {
             File file = new File(dir, filePath);
             boolean hasOldFile = false;
             if (file.exists()) {
                 //生成过了
                 hasOldFile = true;
-                file = new File(file.getParent(), file.getName() + ".tmp");
+                file = new File(file.getParent(), file.getName() + ".new");
             }
             String className = file.getName().replace(".java", "");
-            className = className.replace(".tmp", "");
+            className = className.replace(".new", "");
             String packageName = extension.handler.replace("." + className, "");
 
             TypeSpec.Builder handlerClass = TypeSpec.classBuilder(className)
@@ -70,6 +76,7 @@ public class GenHandlerClass {
         method.addParameter(String.class, "returnType");
         method.addParameter(Object[].class, "args");
         handlerClass.addMethod(method.build());
+        handlerClass.addJavadoc("\n\t$L",hookTarget.getReturnMethodName());
     }
 
     private static void genEnter(TypeSpec.Builder handlerClass, HookTarget hookTarget) {
@@ -84,6 +91,7 @@ public class GenHandlerClass {
         method.addParameter(String.class, "returnType");
         method.addParameter(Object[].class, "args");
         handlerClass.addMethod(method.build());
+        handlerClass.addJavadoc("\n\t$L",hookTarget.getEnterMethodName());
     }
 
     @NotNull

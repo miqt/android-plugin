@@ -6,6 +6,7 @@ public class HookMethodExtension extends Extension {
     public List<HookTarget> hookTargets = new ArrayList<>();
     //方法hook调用实现类
     public String handler = "com.miqt.hookplugin.HookHandler";
+    public String handlerDir;
 
     public HookMethodExtension() {
         hookTargets.add(new HookTarget("annotationHookMethod").setAnnotation("Lcom/miqt/pluginlib/annotation/HookMethod;"));

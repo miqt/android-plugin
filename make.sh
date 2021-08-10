@@ -4,13 +4,13 @@ cd plugin
 
 #./gradlew auto-trycatch:uploadArchives
 #
-#./gradlew hook-method-lib:uploadArchives
-#./gradlew hook-method-plugin:uploadArchives
+./gradlew hook-method-lib:uploadArchives
+./gradlew hook-method-plugin:uploadArchives
 #
 #./gradlew sample-plugin:uploadArchives
 
-./gradlew strmix-plugin:uploadArchives
-./gradlew strmix-plugin-lib:uploadArchives
+#./gradlew strmix-plugin:uploadArchives
+#./gradlew strmix-plugin-lib:uploadArchives
 
 #./gradlew base_plugin:publishToGitMaven
 

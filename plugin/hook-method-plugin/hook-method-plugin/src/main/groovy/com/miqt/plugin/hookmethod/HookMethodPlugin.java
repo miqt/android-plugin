@@ -79,17 +79,6 @@ public class HookMethodPlugin extends BasePlugin<HookMethodExtension> {
         getLogger().log("[jar class]" + jarFile.getName() + ":" + entry.getName());
         //跳过自己的类库
         if(entry.getName().contains("com/miqt/pluginlib/")){
-            //如果有impl，替换处理实现类
-            if (!TextUtils.isEmpty(getExtension().handler)
-                    && entry.getName().equals("com/miqt/pluginlib/tools/MethodHookHandler.class")) {
-                try {
-                    getLogger().log("[dump impl]" + jarFile.getName() + ":" + entry.getName());
-                    return DumpClazz.dump(getExtension().handler);
-                } catch (Exception e) {
-                    getLogger().log(e);
-                    return classBytes;
-                }
-            }
             return classBytes;
         }
         //注解+正则判断是否插桩

@@ -9,15 +9,18 @@
 apply plugin: 'com.miqt.plugin.hookmethod'
 hook_method {
     buildLog = true
-    injectJar = false
+    injectJar = true
     enable = true
-    runVariant = "debug"
     hookTargets {
-        hook_onclick {
+        hook_onclick { //<-- 点击事件
             interfaces = "android/view/View\$OnClickListener"
             methodName = "onClick"
             descriptor = "(Landroid/view/View;)V"
-            hookTiming = "Enter"
+            hookTiming = "Enter|Return"
+        }
+        hook_activity { //<-- 所有activity继承类的方法
+            superName = "android/app/Activity"
+            hookTiming = "Enter|Return"
         }
     }
 }
