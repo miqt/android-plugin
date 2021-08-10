@@ -199,10 +199,10 @@ hook_method {
 
 ## 内置注解
 
-**@HookInfo：**输出对应字节码限制条件信息
-**@HookMethod：**标记hook方法，不需要写hookTargets，可以理解为内置的
-**@HookMethodInherited：**标记hook方法，有类继承性，不需要写hookTargets，可以理解为内置的
-**@IgnoreMethodHook：**标记忽略方法，优先级最高
+**@HookInfo：**输出对应字节码限制条件信息  
+**@HookMethod：**标记hook方法，不需要写hookTargets，可以理解为内置的  
+**@HookMethodInherited：**标记hook方法，有类继承性，不需要写hookTargets，可以理解为内置的  
+**@IgnoreMethodHook：**标记忽略方法，优先级最高  
 
 #### 读都读到这里了，帮我点个star吧，你的肯定是我持续维护的动力！
 
