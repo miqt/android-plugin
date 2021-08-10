@@ -5,7 +5,7 @@ import com.miqt.asm.method_hook.Extension
 public class HookMethodExtension extends Extension {
     public List<HookTarget> hookTargets = new ArrayList<>();
     //方法hook调用实现类
-    public String impl = "com.miqt.hookplugin.HookHandler";
+    public String handler = "com.miqt.hookplugin.HookHandler";
 
     public HookMethodExtension() {
         hookTargets.add(new HookTarget("annotationHookMethod").setAnnotation("Lcom/miqt/pluginlib/annotation/HookMethod;"));
@@ -23,7 +23,7 @@ public class HookMethodExtension extends Extension {
     public String toString() {
         final StringBuffer sb = new StringBuffer("HookMethodExtension{");
         sb.append(", hookTargets=").append(hookTargets);
-        sb.append(", impl='").append(impl).append('\'');
+        sb.append(", impl='").append(handler).append('\'');
         sb.append(", enable=").append(enable);
         sb.append(", runVariant='").append(runVariant).append('\'');
         sb.append(", injectJar=").append(injectJar);

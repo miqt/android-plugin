@@ -125,7 +125,7 @@ class MethodHookVisitor extends ClassVisitor {
                     return
                 }
                 getArgs()
-                mv.visitMethodInsn(INVOKESTATIC,  config.impl.replace(".","/"),
+                mv.visitMethodInsn(INVOKESTATIC,  config.handler.replace(".","/"),
                         target.getEnterMethodName(),
                         "(" +
                                 "Ljava/lang/Object;" +
@@ -137,7 +137,7 @@ class MethodHookVisitor extends ClassVisitor {
                                 ")V",
                         false)
                 plugin.getLogger().log("\t[MethodEnter]" + className + "." + name +
-                        "\n\t\t-->" + config.impl + "." + target.getEnterMethodName())
+                        "\n\t\t-->" + config.handler + "." + target.getEnterMethodName())
 
                 super.onMethodEnter()
             }
@@ -159,7 +159,7 @@ class MethodHookVisitor extends ClassVisitor {
                     }
                     ClassUtils.autoBox(mv, returnType)
                     getArgs()
-                    mv.visitMethodInsn(INVOKESTATIC,  config.impl.replace(".","/"),
+                    mv.visitMethodInsn(INVOKESTATIC,  config.handler.replace(".","/"),
                             target.getReturnMethodName(),
                             "(" +
                                     "Ljava/lang/Object;" + //return
@@ -172,11 +172,11 @@ class MethodHookVisitor extends ClassVisitor {
                                     ")V",
                             false)
                     plugin.getLogger().log("\t[MethodReturn]" + className + "." + name +
-                            "\n\t\t-->" + config.impl + "." + target.getReturnMethodName())
+                            "\n\t\t-->" + config.handler + "." + target.getReturnMethodName())
                 } else if (opcode == RETURN) {
                     mv.visitInsn(ACONST_NULL)
                     getArgs()
-                    mv.visitMethodInsn(INVOKESTATIC, config.impl.replace(".","/"),
+                    mv.visitMethodInsn(INVOKESTATIC, config.handler.replace(".","/"),
                             target.getReturnMethodName(),
                             "(" +
                                     "Ljava/lang/Object;" + //return
@@ -189,7 +189,7 @@ class MethodHookVisitor extends ClassVisitor {
                                     ")V",
                             false)
                     plugin.getLogger().log("\t[MethodReturn]" + className + "." + name +
-                            "\n\t\t-->" + config.impl + "." + target.getReturnMethodName())
+                            "\n\t\t-->" + config.handler + "." + target.getReturnMethodName())
                 }
 
 

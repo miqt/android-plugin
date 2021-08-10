@@ -2,11 +2,7 @@ package com.miqt.plugin.hookmethod;
 
 import com.android.build.api.transform.TransformInvocation;
 import com.miqt.asm.method_hook.BasePlugin;
-import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.TypeSpec;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.http.util.TextUtils;
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Project;
@@ -14,13 +10,9 @@ import org.gradle.api.plugins.ExtensionAware;
 import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Type;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.jar.JarEntry;
-
-import javax.lang.model.element.Modifier;
 
 import static org.objectweb.asm.ClassReader.EXPAND_FRAMES;
 
@@ -41,7 +33,7 @@ public class HookMethodPlugin extends BasePlugin<HookMethodExtension> {
         // 将容器添加为 extension
         aware.getExtensions().add("hookTargets", hookTargets);
         project.afterEvaluate(project1 -> {
-            if (getExtension().impl == null || "".equals(getExtension().impl)) {
+            if (getExtension().handler == null || "".equals(getExtension().handler)) {
                 return;
             }
             getExtension().hookTargets.addAll(hookTargets);
@@ -64,8 +56,8 @@ public class HookMethodPlugin extends BasePlugin<HookMethodExtension> {
     @Override
     public byte[] transform(byte[] classBytes, File classFile) {
         String name = classFile.getName();
-        if (!TextUtils.isEmpty(getExtension().impl) &&
-                classFile.getAbsolutePath().contains(getExtension().impl.replace(".", File.separator))) {
+        if (!TextUtils.isEmpty(getExtension().handler) &&
+                classFile.getAbsolutePath().contains(getExtension().handler.replace(".", File.separator))) {
             return classBytes;
         }
         if (name.endsWith(".class") && !name.startsWith("R$") &&
@@ -80,19 +72,19 @@ public class HookMethodPlugin extends BasePlugin<HookMethodExtension> {
     @Override
     public byte[] transformJar(byte[] classBytes, File jarFile, JarEntry entry) {
         //如果是impl类，直接跳过
-        if (!TextUtils.isEmpty(getExtension().impl) &&
-                entry.getName().contains(getExtension().impl.replace(".", "/"))) {
+        if (!TextUtils.isEmpty(getExtension().handler) &&
+                entry.getName().contains(getExtension().handler.replace(".", "/"))) {
             return classBytes;
         }
         getLogger().log("[jar class]" + jarFile.getName() + ":" + entry.getName());
         //跳过自己的类库
         if(entry.getName().contains("com/miqt/pluginlib/")){
             //如果有impl，替换处理实现类
-            if (!TextUtils.isEmpty(getExtension().impl)
+            if (!TextUtils.isEmpty(getExtension().handler)
                     && entry.getName().equals("com/miqt/pluginlib/tools/MethodHookHandler.class")) {
                 try {
                     getLogger().log("[dump impl]" + jarFile.getName() + ":" + entry.getName());
-                    return DumpClazz.dump(getExtension().impl);
+                    return DumpClazz.dump(getExtension().handler);
                 } catch (Exception e) {
                     getLogger().log(e);
                     return classBytes;

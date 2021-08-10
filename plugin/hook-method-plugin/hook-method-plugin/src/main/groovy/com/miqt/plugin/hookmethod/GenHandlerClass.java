@@ -1,7 +1,6 @@
 package com.miqt.plugin.hookmethod;
 
 import com.squareup.javapoet.CodeBlock;
-import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
@@ -28,7 +27,7 @@ public class GenHandlerClass {
             "\n@author miqingtang@163.com";
 
     static void genHandlerClass(HookMethodExtension extension, @NotNull Project project) {
-        String filePath = extension.impl.replace(".", "/") + ".java";
+        String filePath = extension.handler.replace(".", "/") + ".java";
         String dir = project.getProjectDir() + "/src/main/java/";
         try {
             File file = new File(dir, filePath);
@@ -40,7 +39,7 @@ public class GenHandlerClass {
             }
             String className = file.getName().replace(".java", "");
             className = className.replace(".tmp", "");
-            String packageName = extension.impl.replace("." + className, "");
+            String packageName = extension.handler.replace("." + className, "");
 
             TypeSpec.Builder handlerClass = TypeSpec.classBuilder(className)
                     .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
