@@ -55,7 +55,7 @@ public class MainActivity extends Activity {
 
 点击同步按钮，编译一下项目，这时候，插件就会自动生成该点击事件的hook转发handler处理类：
 
-![image-20210810120829105](..\..\images\image-20210810120829105.png)
+类似这样的：[HookHandler](https://github.com/miqt/android-plugin/blob/master/app/src/main/java/com/miqt/hookplugin/HookHandler.java)
 
 这时候我们打开Apk反编译查看，就可以看到插桩代码了：
 
