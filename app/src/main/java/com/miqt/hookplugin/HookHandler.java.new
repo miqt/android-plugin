@@ -1,0 +1,152 @@
+package com.miqt.hookplugin;
+
+import java.lang.Object;
+import java.lang.String;
+
+/**
+ * This class generate by Hook Method Plugin.
+ * Its function is to receive the forwarding of the intercepted method. 
+ * You can add processing logic to the generated method.
+ * Have fun!
+ * Each time you add a hook point, manually merge the new method in the latest ‘xxx.java.new’ file after rebuild
+ *
+ * @see <a href="https://github.com/miqt/android-plugin">miqt/android-plugin</a>
+ * @author miqingtang@163.com
+ *
+ * handler method list:
+ * 	annotationHookMethodEnter
+ * 	annotationHookMethodReturn
+ * 	annotationHookMethodInheritedEnter
+ * 	annotationHookMethodInheritedReturn
+ * 	hook_activityEnter
+ * 	hook_activityReturn
+ * 	hook_onclickEnter
+ * 	hook_onclickReturn
+ */
+public final class HookHandler {
+  /**
+   * This method generate with:
+   * 	annotationHookMethod{
+   * 		access=-1
+   * 		annotation=Lcom/miqt/pluginlib/annotation/HookMethod;
+   * 		hookTiming=Enter|Return
+   * 	}
+   * Generate Time:2021-08-10 15:09:30
+   */
+  public static void annotationHookMethodEnter(Object thisObj, String className, String methodName,
+      String argsType, String returnType, Object[] args) {
+    //TODO annotationHookMethodEnter empty implementation!;
+  }
+
+  /**
+   * This method generate with:
+   * 	annotationHookMethod{
+   * 		access=-1
+   * 		annotation=Lcom/miqt/pluginlib/annotation/HookMethod;
+   * 		hookTiming=Enter|Return
+   * 	}
+   * Generate Time:2021-08-10 15:09:30
+   */
+  public static void annotationHookMethodReturn(Object returnObj, Object thisObj, String className,
+      String methodName, String argsType, String returnType, Object[] args) {
+    //TODO annotationHookMethodReturn empty implementation!;
+  }
+
+  /**
+   * This method generate with:
+   * 	annotationHookMethodInherited{
+   * 		access=-1
+   * 		annotation=Lcom/miqt/pluginlib/annotation/HookMethodInherited;
+   * 		hookTiming=Enter|Return
+   * 	}
+   * Generate Time:2021-08-10 15:09:30
+   */
+  public static void annotationHookMethodInheritedEnter(Object thisObj, String className,
+      String methodName, String argsType, String returnType, Object[] args) {
+    //TODO annotationHookMethodInheritedEnter empty implementation!;
+  }
+
+  /**
+   * This method generate with:
+   * 	annotationHookMethodInherited{
+   * 		access=-1
+   * 		annotation=Lcom/miqt/pluginlib/annotation/HookMethodInherited;
+   * 		hookTiming=Enter|Return
+   * 	}
+   * Generate Time:2021-08-10 15:09:30
+   */
+  public static void annotationHookMethodInheritedReturn(Object returnObj, Object thisObj,
+      String className, String methodName, String argsType, String returnType, Object[] args) {
+    //TODO annotationHookMethodInheritedReturn empty implementation!;
+  }
+
+  /**
+   * This method generate with:
+   * 	hook_activity{
+   * 		access=-1
+   * 		superName=android/app/Activity
+   * 		hookTiming=Enter|Return
+   * 	}
+   * Generate Time:2021-08-10 15:09:30
+   */
+  public static void hook_activityEnter(Object thisObj, String className, String methodName,
+      String argsType, String returnType, Object[] args) {
+    //TODO hook_activityEnter empty implementation!;
+  }
+
+  /**
+   * This method generate with:
+   * 	hook_activity{
+   * 		access=-1
+   * 		superName=android/app/Activity
+   * 		hookTiming=Enter|Return
+   * 	}
+   * Generate Time:2021-08-10 15:09:30
+   */
+  public static void hook_activityReturn(Object returnObj, Object thisObj, String className,
+      String methodName, String argsType, String returnType, Object[] args) {
+    //TODO hook_activityReturn empty implementation!;
+  }
+
+  /**
+   * This method generate with:
+   * 	hook_onclick{
+   * 		access=-1
+   * 		interfaces=android/view/View$OnClickListener
+   * 		methodName=onClick
+   * 		descriptor=(Landroid/view/View;)V
+   * 		hookTiming=Enter|Return
+   * 	}
+   * Argument:
+   * 	Landroid/view/View;
+   *
+   * Return Type:
+   * 	V
+   * Generate Time:2021-08-10 15:09:30
+   */
+  public static void hook_onclickEnter(Object thisObj, String className, String methodName,
+      String argsType, String returnType, Object[] args) {
+    //TODO hook_onclickEnter empty implementation!;
+  }
+
+  /**
+   * This method generate with:
+   * 	hook_onclick{
+   * 		access=-1
+   * 		interfaces=android/view/View$OnClickListener
+   * 		methodName=onClick
+   * 		descriptor=(Landroid/view/View;)V
+   * 		hookTiming=Enter|Return
+   * 	}
+   * Argument:
+   * 	Landroid/view/View;
+   *
+   * Return Type:
+   * 	V
+   * Generate Time:2021-08-10 15:09:30
+   */
+  public static void hook_onclickReturn(Object returnObj, Object thisObj, String className,
+      String methodName, String argsType, String returnType, Object[] args) {
+    //TODO hook_onclickReturn empty implementation!;
+  }
+}

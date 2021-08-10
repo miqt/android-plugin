@@ -10,7 +10,15 @@ import java.util.Stack;
 
 @IgnoreMethodHook
 public class MethodHookPrint implements IMethodHookHandler {
+    private String tag = "MethodHookHandler";
     private final ThreadLocal<Stack<Long>> local = new ThreadLocal<>();
+
+    public MethodHookPrint(String tag) {
+        this.tag = tag;
+    }
+
+    public MethodHookPrint() {
+    }
 
     @Override
     public void onMethodEnter(Object thisObj, String className, String methodName, String argsType, String returnType, Object... args) {

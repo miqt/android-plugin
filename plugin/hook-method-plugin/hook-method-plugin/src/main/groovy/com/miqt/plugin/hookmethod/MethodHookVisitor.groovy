@@ -1,20 +1,20 @@
 package com.miqt.plugin.hookmethod
 
-
 import org.gradle.api.Project
 import org.objectweb.asm.*
 import org.objectweb.asm.commons.AdviceAdapter
 
-import java.util.regex.Pattern
-
 class MethodHookVisitor extends ClassVisitor {
 
-    private String className = null
+    private String[] interfaces;//继承类
+    private String superName;//所在父类
+    private String className;//方法所在的类名
+
+    private List<String> classAnnotation = new ArrayList<>();//方法注释
     private HookMethodExtension config
     private Project project
     private HookMethodPlugin plugin
     private boolean isIgnoreMethodHook = false
-    private boolean isMethodHookClass = false
 
     public MethodHookVisitor(ClassVisitor classVisitor, HookMethodPlugin plugin) {
         super(Opcodes.ASM5, classVisitor)
@@ -26,19 +26,65 @@ class MethodHookVisitor extends ClassVisitor {
     @Override
     public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
         super.visit(version, access, name, signature, superName, interfaces)
-        className = name.replace("/", ".")
+        className = name
+        this.interfaces = interfaces
+        this.superName = superName
     }
 
     @Override
     AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
         if (descriptor == "Lcom/miqt/pluginlib/annotation/IgnoreMethodHook;") {
             isIgnoreMethodHook = true
-        } else if (descriptor == "Lcom/miqt/pluginlib/annotation/HookMethod;") {
-            isMethodHookClass = true
-        } else if (descriptor == "Lcom/miqt/pluginlib/annotation/HookMethodInherited;") {
-            isMethodHookClass = true
         }
+        classAnnotation.add(descriptor)
         return super.visitAnnotation(descriptor, visible)
+    }
+
+    HookTarget isMatch(int access = -1,//方法的访问权限
+                       String[] interfaces,//继承类
+                       String superName,//所在父类
+                       String className,//方法所在的类名
+                       String methodName,//方法名称
+                       String descriptor,//方法参数和返回值字段描述符
+                       List<String> methodAnnotation,//方法上的注解
+                       List<String> classAnnotation,//方法上的注解
+                       String signature,//方法参数或返回值为泛型
+                       String[] exceptions,//方法抛出那些异常
+                       String hookTiming,
+                       boolean isIgnoreMethodHook
+    ) {
+        if (methodAnnotation.contains("Lcom/miqt/pluginlib/annotation/HookInfo;")
+                || classAnnotation.contains("Lcom/miqt/pluginlib/annotation/HookInfo;")) {
+            def hookinfo =
+                    ("\n[HookInfo]:" +
+                            "\n\taccess = " + access +
+                            "\n\tinterfaces = " + interfaces +
+                            "\n\tsuperName = " + superName +
+                            "\n\tclassName = " + className +
+                            "\n\tmethodName = " + methodName +
+                            "\n\tdescriptor = " + descriptor +
+                            "\n\tmethodAnnotation = " + methodAnnotation +
+                            "\n\tclassAnnotation = " + classAnnotation +
+                            "\n\tsignature = " + signature +
+                            "\n\texceptions = " + exceptions +
+                            "\n\thookTiming = " + hookTiming +
+                            "\n\tisIgnoreMethodHook = " + isIgnoreMethodHook)
+            plugin.getLogger().log(hookinfo)
+            print(hookinfo)
+        }
+        if (isIgnoreMethodHook) {
+            return null
+        }
+        List<HookTarget> targets = plugin.getExtension().hookTargets;
+        for (i in 0..<targets.size()) {
+            if (targets.get(i).isMatch(
+                    access, interfaces, superName, className,
+                    methodName, descriptor, methodAnnotation, classAnnotation,
+                    signature, exceptions, hookTiming)) {
+                return targets.get(i)
+            }
+        }
+        return null
     }
 
     @Override
@@ -60,39 +106,27 @@ class MethodHookVisitor extends ClassVisitor {
         def mv = cv.visitMethod(access, name, descriptor, signature, exceptions)
         mv = new AdviceAdapter(Opcodes.ASM5, mv, access, name, descriptor) {
 
-            private boolean inject = false
-
+            private List<String> methodAnnotation = new ArrayList<>();//方法注释
             @Override
             AnnotationVisitor visitAnnotation(String desc, boolean visible) {
-                if ("Lcom/miqt/pluginlib/annotation/HookMethod;" == desc) {
-                    inject = true
-                } else if ("Lcom/miqt/pluginlib/annotation/HookMethodInherited;" == desc) {
-                    inject = true
-                } else if ("Lcom/miqt/pluginlib/annotation/IgnoreMethodHook;" == desc) {
-                    inject = false
+                if (descriptor == "Lcom/miqt/pluginlib/annotation/IgnoreMethodHook;") {
+                    isIgnoreMethodHook = true
                 }
+                methodAnnotation.add(desc)
                 return super.visitAnnotation(desc, visible)
-            }
-
-            //优先级 是否启用，注解，类名白名单
-            private boolean isInject() {
-                if (inject || isMethodHookClass) {
-                    return true
-                }
-                for (String value : config.classWhiteListRegex) {
-                    if (Pattern.matches(value, className)) {
-                        return true
-                    }
-                }
-                return false
             }
 
             @Override
             protected synchronized void onMethodEnter() {
-                if (!isInject()) return
+                HookTarget target = isMatch(access, interfaces, superName, className,
+                        name, descriptor, methodAnnotation, classAnnotation,
+                        signature, exceptions, HookTarget.Enter, isIgnoreMethodHook)
+                if (target == null) {
+                    return
+                }
                 getArgs()
-                mv.visitMethodInsn(INVOKESTATIC, "com/miqt/pluginlib/tools/MethodHookHandler",
-                        "enter",
+                mv.visitMethodInsn(INVOKESTATIC,  config.handler.replace(".","/"),
+                        target.getEnterMethodName(),
                         "(" +
                                 "Ljava/lang/Object;" +
                                 "Ljava/lang/String;" +
@@ -102,13 +136,20 @@ class MethodHookVisitor extends ClassVisitor {
                                 "[Ljava/lang/Object;" +
                                 ")V",
                         false)
-                plugin.getLogger().log("\t[MethodEnter]" + className + name)
+                plugin.getLogger().log("\t[MethodEnter]" + className + "." + name +
+                        "\n\t\t-->" + config.handler + "." + target.getEnterMethodName())
+
                 super.onMethodEnter()
             }
 
             @Override
             protected synchronized void onMethodExit(int opcode) {
-                if (!isInject()) return
+                HookTarget target = isMatch(access, interfaces, superName, className,
+                        name, descriptor, methodAnnotation, classAnnotation,
+                        signature, exceptions, HookTarget.Return, isIgnoreMethodHook)
+                if (target == null) {
+                    return
+                }
                 //有返回值的装载返回值参数，无返回值的装载null
                 if (opcode >= IRETURN && opcode < RETURN) {
                     if (returnType.sort == Type.LONG || returnType.sort == Type.DOUBLE) {
@@ -118,8 +159,8 @@ class MethodHookVisitor extends ClassVisitor {
                     }
                     ClassUtils.autoBox(mv, returnType)
                     getArgs()
-                    mv.visitMethodInsn(INVOKESTATIC, "com/miqt/pluginlib/tools/MethodHookHandler",
-                            "exit",
+                    mv.visitMethodInsn(INVOKESTATIC,  config.handler.replace(".","/"),
+                            target.getReturnMethodName(),
                             "(" +
                                     "Ljava/lang/Object;" + //return
                                     "Ljava/lang/Object;" + //this
@@ -130,12 +171,13 @@ class MethodHookVisitor extends ClassVisitor {
                                     "[Ljava/lang/Object;" +//prams
                                     ")V",
                             false)
-                        plugin.getLogger().log("\t[MethodExit]" + className + name)
+                    plugin.getLogger().log("\t[MethodReturn]" + className + "." + name +
+                            "\n\t\t-->" + config.handler + "." + target.getReturnMethodName())
                 } else if (opcode == RETURN) {
                     mv.visitInsn(ACONST_NULL)
                     getArgs()
-                    mv.visitMethodInsn(INVOKESTATIC, "com/miqt/pluginlib/tools/MethodHookHandler",
-                            "exit",
+                    mv.visitMethodInsn(INVOKESTATIC, config.handler.replace(".","/"),
+                            target.getReturnMethodName(),
                             "(" +
                                     "Ljava/lang/Object;" + //return
                                     "Ljava/lang/Object;" + //this
@@ -146,7 +188,8 @@ class MethodHookVisitor extends ClassVisitor {
                                     "[Ljava/lang/Object;" +//prams
                                     ")V",
                             false)
-                        plugin.getLogger().log("\t[MethodExit]" + className + name)
+                    plugin.getLogger().log("\t[MethodReturn]" + className + "." + name +
+                            "\n\t\t-->" + config.handler + "." + target.getReturnMethodName())
                 }
 
 

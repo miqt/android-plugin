@@ -6,29 +6,39 @@
 //    handleClass='com.asm.code.MethodHookPrint'
 //    handleMethod='point'
 //}
-//apply plugin: 'com.miqt.plugin.hookmethod'
-//hook_method {
-//    classWhiteListRegex = [".*"]
-//    buildLog = true
-//    injectJar = false
-//    enable = true
-//    runVariant = "debug"
-//}
+apply plugin: 'com.miqt.plugin.hookmethod'
+hook_method {
+    buildLog = true
+    injectJar = true
+    enable = true
+    hookTargets {
+        hook_onclick { //<-- 点击事件
+            interfaces = "android/view/View\$OnClickListener"
+            methodName = "onClick"
+            descriptor = "(Landroid/view/View;)V"
+            hookTiming = "Enter|Return"
+        }
+        hook_activity { //<-- 所有activity继承类的方法
+            superName = "android/app/Activity"
+            hookTiming = "Enter|Return"
+        }
+    }
+}
 //apply plugin: 'com.miqt.plugin.sample'
 //sample_extension {
 //    buildLog = true
 //    injectJar = false
 //    enable = true
 //}
-apply plugin: 'com.miqt.plugin.strmix'
-str_mix {
-    buildLog = true
-    injectJar = true
-    enable = true
-    enableMix = false
-    enableRep = true
-    key = "fdsf"
-    repTable= [
-            "abc": "hello",
-    ]
-}
+//apply plugin: 'com.miqt.plugin.strmix'
+//str_mix {
+//    buildLog = true
+//    injectJar = true
+//    enable = true
+//    enableMix = false
+//    enableRep = true
+//    key = "fdsf"
+//    repTable= [
+//            "abc": "hello",
+//    ]
+//}
