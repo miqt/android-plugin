@@ -77,7 +77,7 @@ public class MainActivity extends Activity {
 }
 ```
 
-到了这里，我们只需要在`hook_onclickEnter`这个方法中编写全局点击事件监控处理逻辑就可以了，是不是非常简单。
+到了这里，我们只需要在`hook_onclickEnter`这个方法中编写全局点击事件监控处理逻辑就可以了，所有的这一切都是插件自动完成的哦，我们只需要配置Hook规则就可以了，是不是非常简单。
 
 示例配置传送门：https://github.com/miqt/android-plugin/blob/master/app/build.gradle
 
