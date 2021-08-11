@@ -187,22 +187,22 @@ public class HookTarget {
         final StringBuffer sb = new StringBuffer(name + "{\n\t\t");
         sb.append("access=").append(access).append("\n\t\t");
         if (interfaces != null)
-            sb.append("interfaces=").append(interfaces).append("\n\t\t");
+            sb.append("interfaces=\"").append(interfaces).append("\"\n\t\t");
         if (superName != null)
-            sb.append("superName=").append(superName).append("\n\t\t");
+            sb.append("superName=\"").append(superName).append("\"\n\t\t");
         if (className != null)
-            sb.append("className=").append(className).append("\n\t\t");
+            sb.append("className=\"").append(className).append("\"\n\t\t");
         if (methodName != null)
-            sb.append("methodName=").append(methodName).append("\n\t\t");
+            sb.append("methodName=\"").append(methodName).append("\"\n\t\t");
         if (descriptor != null)
-            sb.append("descriptor=").append(descriptor).append("\n\t\t");
+            sb.append("descriptor=\"").append(descriptor).append("\"\n\t\t");
         if (annotation != null)
-            sb.append("annotation=").append(annotation).append("\n\t\t");
+            sb.append("annotation=\"").append(annotation).append("\"\"\n\t\t");
         if (signature != null)
-            sb.append("signature=").append(signature).append("\n\t\t");
+            sb.append("signature=\"").append(signature).append("\"\n\t\t");
         if (exceptions != null)
             sb.append("exceptions=").append(Arrays.asList(exceptions).toString()).append("\n\t\t");
-        sb.append("hookTiming=").append(hookTiming).append("\n\t");
+        sb.append("hookTiming=\"").append(hookTiming).append("\"\n\t");
         sb.append('}');
         return sb.toString();
     }

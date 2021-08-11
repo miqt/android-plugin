@@ -14,7 +14,7 @@
 
 1. 先定义Hook点，这个hook点的目标是监控所有的点击事件。在 app module 中的 build.gradle 添加以下代码，详细字段含义会在下文说明。
 
-```
+```groovy
 apply plugin: 'com.miqt.plugin.hookmethod'
 hook_method {
     buildLog = true
@@ -33,11 +33,11 @@ hook_method {
 
 hook_method 是对插件的整体配置，hookTargets 是Hook点位的配置，编译时，会按照定义的筛选条件来进行筛选，四个条件同时满足，才会进行插桩。
 
-注意，这里由于是字节码操作，因此这里的`descriptor`定义都是**字段描述符**，和**字节码描述符**，不知道的可以百度了解下，非常简单。如果你不想了解也没事，我后面有介绍有一种方法可以直接查看某个方法的字节码信息。利用`@HookInfo`注解
+> 注意，这里由于是字节码操作，因此这里的`descriptor`定义都是**字段描述符**，和**字节码描述符**，不知道的可以百度了解下，非常简单。如果你不想了解也没事，我后面有介绍有一种方法可以直接查看某个方法的字节码信息。利用`@HookInfo`注解
 
 进行过以上配置后，我们随便写一个按钮，然后添加个点击事件。
 
-```
+```java
 public class MainActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,14 +87,14 @@ public class MainActivity extends Activity {
 
 1. **添加maven仓库**
 
-   ```
+   ```groovy
    maven { url 'https://raw.githubusercontent.com/miqt/maven/master' }
    maven { url 'https://gitee.com/miqt/maven/raw/master' }
    ```
 
    还拉取不到库？
 
-   ```
+   ```groovy
    maven { url 'https://raw.fastgit.org/miqt/maven/master' }
    ```
 
@@ -108,7 +108,7 @@ public class MainActivity extends Activity {
 
     ```groovy
     dependencies {
-        classpath 'com.miqt:hook-method-plugin:0.4.0'
+        classpath 'com.miqt:hook-method-plugin:0.4.1'
     }
     ```
 
@@ -122,10 +122,10 @@ public class MainActivity extends Activity {
         enable = true
         hookTargets {
             hook_onclick { // <-- 自定义Hook点
-                interfaces = "android/view/View\$OnClickListener"//<-- hook条件1，继承了这个接口
-                methodName = "onClick"							//<-- hook条件2，方法名
-                descriptor = "(Landroid/view/View;)V"			//<-- hook条件3，方法参数和返回值类型
-                hookTiming = "Enter"							//<-- hook条件4，指定是在方法进入时进行Hook
+                interfaces = "android/view/View\$OnClickListener"	//<-- hook条件1，继承了这个接口
+                methodName = "onClick"	//<-- hook条件2，方法名
+                descriptor = "(Landroid/view/View;)V"	//<-- hook条件3，方法参数和返回值类型
+                hookTiming = "Enter"	//<-- hook条件4，指定是在方法进入时进行Hook
             }
         }
     }
@@ -135,7 +135,7 @@ public class MainActivity extends Activity {
 
     ```groovy
     dependencies {
-        implementation 'com.miqt:hook-method-lib:0.4.0'
+        implementation 'com.miqt:hook-method-lib:0.4.1'
     }
     ```
 
@@ -162,7 +162,7 @@ public class MainActivity extends Activity {
 
 结构：
 
-```
+```groovy
 hook_method {
     hookTargets {
         name1 {
@@ -199,14 +199,75 @@ hook_method {
 
 ## 内置注解
 
-**@HookInfo：**输出对应字节码限制条件信息  
-**@HookMethod：**标记hook方法，不需要写hookTargets，可以理解为内置的  
-**@HookMethodInherited：**标记hook方法，有类继承性，不需要写hookTargets，可以理解为内置的  
-**@IgnoreMethodHook：**标记忽略方法，优先级最高  
+**@HookInfo： ** 输出对应字节码限制条件信息，可复制打印出的对应条件用于Hook同类型方法  
+**@HookMethod： ** 标记hook方法，不需要写hookTargets，可以理解为内置的  
+**@HookMethodInherited：** 标记hook方法，有类继承性，不需要写hookTargets，可以理解为内置的  
+**@IgnoreMethodHook：** 标记忽略方法，优先级最高   
 
-#### 读都读到这里了，帮我点个star吧，你的肯定是我持续维护的动力！
+#### 读都读到这里了，如果觉得还不错就帮我点个star吧，你的肯定是我持续维护的动力！
 
 #### 如果有使用问题欢迎提交Issues ，或者加我微信一起交流，微信号在我的主页。
+
+最后贴个Demo中的示例：
+
+```java
+apply plugin: 'com.miqt.plugin.hookmethod'
+hook_method {
+    buildLog = true
+    injectJar = true
+    enable = true
+    hookTargets {
+        hook_onclick {
+            //<-- 所有点击事件
+            interfaces = "android/view/View\$OnClickListener"
+            methodName = "onClick"
+            descriptor = "(Landroid/view/View;)V"
+            hookTiming = "Enter|Return"
+        }
+        hook_activity_lifeCycle {
+            //<-- 所有activity生命周期方法
+            access = 4
+            superName = "android/app/Activity"
+            //这里是个正则表达式
+            methodName = "(onCreate)|(onResume)|(onPause)|(onStart)|(onDestroy)|(onStop)"
+            hookTiming = "Enter|Return"
+        }
+        hook_thread_run{
+            //<-- 线程run方法
+            access = 1
+            superName = "java/lang/Thread"
+            methodName = "run"
+            descriptor = "()V"
+        }
+        hook_Runnable_run{
+            //<-- 线程run方法
+            access = 1
+            interfaces = "java/lang/Runnable"
+            methodName = "run"
+            descriptor = "()V"
+        }
+    }
+}
+```
+
+demo打印结果：
+
+```
+I/MethodHookHandler: ┌com/asm/code/MainActivity@efc0c18.onPause():[main]
+I/MethodHookHandler: └com/asm/code/MainActivity@efc0c18.onPause():[0]
+I/MethodHookHandler: ┌com/asm/code/MainActivity@efc0c18.onStop():[main]
+I/MethodHookHandler: └com/asm/code/MainActivity@efc0c18.onStop():[0]
+I/MethodHookHandler: ┌com/asm/code/MainActivity@efc0c18.onStart():[main]
+I/MethodHookHandler: └com/asm/code/MainActivity@efc0c18.onStart():[0]
+I/MethodHookHandler: ┌com/asm/code/MainActivity@efc0c18.onResume():[main]
+I/MethodHookHandler: └com/asm/code/MainActivity@efc0c18.onResume():[3]
+I/MethodHookHandler: ┌com/asm/code/MainActivity$2@f7ef0fe.run():[Thread-5]
+I/MethodHookHandler: └com/asm/code/MainActivity$2@f7ef0fe.run():[1]
+I/MethodHookHandler: ┌com/asm/code/MainActivity@efc0c18.onPause():[main]
+I/MethodHookHandler: └com/asm/code/MainActivity@efc0c18.onPause():[0]
+I/MethodHookHandler: ┌com/asm/code/MainActivity@efc0c18.onStop():[main]
+I/MethodHookHandler: └com/asm/code/MainActivity@efc0c18.onStop():[0]
+```
 
 ## 致谢
 

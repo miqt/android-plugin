@@ -84,33 +84,7 @@ public final class HookHandler {
     methodHookHandler.onMethodReturn(returnObj,thisObj,className,methodName,argsType,returnType,args);
   }
 
-  /**
-   * This method generate with:
-   * 	hook_activity{
-   * 		access=-1
-   * 		superName=android/app/Activity
-   * 		hookTiming=Enter|Return
-   * 	}
-   * Generate Time:2021-08-10 14:53:18
-   */
-  public static void hook_activityEnter(Object thisObj, String className, String methodName,
-      String argsType, String returnType, Object[] args) {
-    methodHookHandler.onMethodEnter(thisObj,className,methodName,argsType,returnType,args);
-  }
 
-  /**
-   * This method generate with:
-   * 	hook_activity{
-   * 		access=-1
-   * 		superName=android/app/Activity
-   * 		hookTiming=Enter|Return
-   * 	}
-   * Generate Time:2021-08-10 14:53:18
-   */
-  public static void hook_activityReturn(Object returnObj, Object thisObj, String className,
-      String methodName, String argsType, String returnType, Object[] args) {
-    methodHookHandler.onMethodReturn(returnObj,thisObj,className,methodName,argsType,returnType,args);
-  }
 
   /**
    * This method generate with:
@@ -152,5 +126,116 @@ public final class HookHandler {
   public static void hook_onclickReturn(Object returnObj, Object thisObj, String className,
       String methodName, String argsType, String returnType, Object[] args) {
     methodHookHandler.onMethodReturn(returnObj,thisObj,className,methodName,argsType,returnType,args);
+  }
+
+  /**
+   * This method generate with:
+   * 	hook_thread_run{
+   * 		access=1
+   * 		superName="java/lang/Thread"
+   * 		methodName="run"
+   * 		descriptor="()V"
+   * 		hookTiming="Enter|Return"
+   * 	}
+   * Argument:
+   * Return Type:
+   * 	V
+   * Generate Time:2021-08-11 11:06:23
+   */
+  public static void hook_thread_runEnter(Object thisObj, String className, String methodName,
+                                          String argsType, String returnType, Object[] args) {
+    methodHookHandler.onMethodEnter(thisObj,className,methodName,argsType,returnType,args);
+
+  }
+
+  /**
+   * This method generate with:
+   * 	hook_thread_run{
+   * 		access=1
+   * 		superName="java/lang/Thread"
+   * 		methodName="run"
+   * 		descriptor="()V"
+   * 		hookTiming="Enter|Return"
+   * 	}
+   * Argument:
+   * Return Type:
+   * 	V
+   * Generate Time:2021-08-11 11:06:23
+   */
+  public static void hook_thread_runReturn(Object returnObj, Object thisObj, String className,
+                                           String methodName, String argsType, String returnType, Object[] args) {
+    methodHookHandler.onMethodReturn(returnObj,thisObj,className,methodName,argsType,returnType,args);
+
+  }
+
+  /**
+   * This method generate with:
+   * 	hook_Runnable_run{
+   * 		access=1
+   * 		interfaces="java/lang/Runnable"
+   * 		methodName="run"
+   * 		descriptor="()V"
+   * 		hookTiming="Enter|Return"
+   * 	}
+   * Argument:
+   * Return Type:
+   * 	V
+   * Generate Time:2021-08-11 11:06:23
+   */
+  public static void hook_Runnable_runEnter(Object thisObj, String className, String methodName,
+                                            String argsType, String returnType, Object[] args) {
+    methodHookHandler.onMethodEnter(thisObj,className,methodName,argsType,returnType,args);
+
+  }
+
+  /**
+   * This method generate with:
+   * 	hook_Runnable_run{
+   * 		access=1
+   * 		interfaces="java/lang/Runnable"
+   * 		methodName="run"
+   * 		descriptor="()V"
+   * 		hookTiming="Enter|Return"
+   * 	}
+   * Argument:
+   * Return Type:
+   * 	V
+   * Generate Time:2021-08-11 11:06:23
+   */
+  public static void hook_Runnable_runReturn(Object returnObj, Object thisObj, String className,
+                                             String methodName, String argsType, String returnType, Object[] args) {
+    methodHookHandler.onMethodReturn(returnObj,thisObj,className,methodName,argsType,returnType,args);
+  }
+
+
+  /**
+   * This method generate with:
+   * 	hook_activity_lifeCycle{
+   * 		access=4
+   * 		superName="android/app/Activity"
+   * 		methodName="(onCreate)|(onResume)|(onPause)|(onStart)|(onDestroy)|(onStop)"
+   * 		hookTiming="Enter|Return"
+   * 	}
+   * Generate Time:2021-08-11 11:21:54
+   */
+  public static void hook_activity_lifeCycleEnter(Object thisObj, String className,
+                                                  String methodName, String argsType, String returnType, Object[] args) {
+    methodHookHandler.onMethodEnter(thisObj,className,methodName,argsType,returnType,args);
+  }
+
+  /**
+   * This method generate with:
+   * 	hook_activity_lifeCycle{
+   * 		access=4
+   * 		superName="android/app/Activity"
+   * 		methodName="(onCreate)|(onResume)|(onPause)|(onStart)|(onDestroy)|(onStop)"
+   * 		hookTiming="Enter|Return"
+   * 	}
+   * Generate Time:2021-08-11 11:21:54
+   */
+  public static void hook_activity_lifeCycleReturn(Object returnObj, Object thisObj,
+                                                   String className, String methodName, String argsType, String returnType, Object[] args) {
+    methodHookHandler.onMethodReturn(returnObj,thisObj,className,methodName,argsType,returnType,args);
+
   }
 }

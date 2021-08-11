@@ -56,19 +56,19 @@ class MethodHookVisitor extends ClassVisitor {
         if (methodAnnotation.contains("Lcom/miqt/pluginlib/annotation/HookInfo;")
                 || classAnnotation.contains("Lcom/miqt/pluginlib/annotation/HookInfo;")) {
             def hookinfo =
-                    ("\n[HookInfo]:" +
-                            "\n\taccess = " + access +
-                            "\n\tinterfaces = " + interfaces +
-                            "\n\tsuperName = " + superName +
-                            "\n\tclassName = " + className +
-                            "\n\tmethodName = " + methodName +
-                            "\n\tdescriptor = " + descriptor +
-                            "\n\tmethodAnnotation = " + methodAnnotation +
-                            "\n\tclassAnnotation = " + classAnnotation +
-                            "\n\tsignature = " + signature +
-                            "\n\texceptions = " + exceptions +
-                            "\n\thookTiming = " + hookTiming +
-                            "\n\tisIgnoreMethodHook = " + isIgnoreMethodHook)
+                    "\n[HookInfo]:"+
+                            "\n\taccess = $access" +
+                            "\n\tinterfaces = $interfaces" +
+                            "\n\tsuperName = \"$superName" +
+                            "\"\n\tclassName = \"$className" +
+                            "\"\n\tmethodName = \"$methodName" +
+                            "\"\n\tdescriptor = \"$descriptor" +
+                            "\"\n\tmethodAnnotation = $methodAnnotation" +
+                            "\n\tclassAnnotation = $classAnnotation" +
+                            "\n\tsignature = \"$signature" +
+                            "\"\n\texceptions = $exceptions\n\thookTiming = \"$hookTiming"+
+                            "\"\n"
+
             plugin.getLogger().log(hookinfo)
             print(hookinfo)
         }
@@ -137,7 +137,7 @@ class MethodHookVisitor extends ClassVisitor {
                                 ")V",
                         false)
                 plugin.getLogger().log("\t[MethodEnter]" + className + "." + name +
-                        "\n\t\t-->" + config.handler + "." + target.getEnterMethodName())
+                        "\n\t\t插桩:" + config.handler + "." + target.getEnterMethodName())
 
                 super.onMethodEnter()
             }
@@ -172,7 +172,7 @@ class MethodHookVisitor extends ClassVisitor {
                                     ")V",
                             false)
                     plugin.getLogger().log("\t[MethodReturn]" + className + "." + name +
-                            "\n\t\t-->" + config.handler + "." + target.getReturnMethodName())
+                            "\n\t\t插桩：" + config.handler + "." + target.getReturnMethodName())
                 } else if (opcode == RETURN) {
                     mv.visitInsn(ACONST_NULL)
                     getArgs()
@@ -189,7 +189,7 @@ class MethodHookVisitor extends ClassVisitor {
                                     ")V",
                             false)
                     plugin.getLogger().log("\t[MethodReturn]" + className + "." + name +
-                            "\n\t\t-->" + config.handler + "." + target.getReturnMethodName())
+                            "\n\t\t插桩：" + config.handler + "." + target.getReturnMethodName())
                 }
 
 

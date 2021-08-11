@@ -7,8 +7,11 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.miqt.pluginlib.annotation.HookInfo;
 import com.miqt.pluginlib.annotation.HookMethod;
 import com.miqt.pluginlib.annotation.IgnoreMethodHook;
+
+import java.util.Random;
 
 
 public class MainActivity extends Activity {
@@ -22,6 +25,47 @@ public class MainActivity extends Activity {
                 Toast.makeText(MainActivity.this, "onClick", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new Thread(){
+            @HookInfo
+            @Override
+            public void run() {
+                super.run();
+            }
+        }.start();
+
+        new Runnable(){
+            @HookInfo
+            @Override
+            public void run() {
+
+            }
+        };
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @HookInfo
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 
     @HookMethod

@@ -18,20 +18,24 @@ import java.lang.String;
  * 	annotationHookMethodReturn
  * 	annotationHookMethodInheritedEnter
  * 	annotationHookMethodInheritedReturn
- * 	hook_activityEnter
- * 	hook_activityReturn
+ * 	hook_Runnable_runEnter
+ * 	hook_Runnable_runReturn
+ * 	hook_activity_lifeCycleEnter
+ * 	hook_activity_lifeCycleReturn
  * 	hook_onclickEnter
  * 	hook_onclickReturn
+ * 	hook_thread_runEnter
+ * 	hook_thread_runReturn
  */
 public final class HookHandler {
   /**
    * This method generate with:
    * 	annotationHookMethod{
    * 		access=-1
-   * 		annotation=Lcom/miqt/pluginlib/annotation/HookMethod;
-   * 		hookTiming=Enter|Return
+   * 		annotation="Lcom/miqt/pluginlib/annotation/HookMethod;""
+   * 		hookTiming="Enter|Return"
    * 	}
-   * Generate Time:2021-08-10 15:09:30
+   * Generate Time:2021-08-11 11:24:04
    */
   public static void annotationHookMethodEnter(Object thisObj, String className, String methodName,
       String argsType, String returnType, Object[] args) {
@@ -42,10 +46,10 @@ public final class HookHandler {
    * This method generate with:
    * 	annotationHookMethod{
    * 		access=-1
-   * 		annotation=Lcom/miqt/pluginlib/annotation/HookMethod;
-   * 		hookTiming=Enter|Return
+   * 		annotation="Lcom/miqt/pluginlib/annotation/HookMethod;""
+   * 		hookTiming="Enter|Return"
    * 	}
-   * Generate Time:2021-08-10 15:09:30
+   * Generate Time:2021-08-11 11:24:04
    */
   public static void annotationHookMethodReturn(Object returnObj, Object thisObj, String className,
       String methodName, String argsType, String returnType, Object[] args) {
@@ -56,10 +60,10 @@ public final class HookHandler {
    * This method generate with:
    * 	annotationHookMethodInherited{
    * 		access=-1
-   * 		annotation=Lcom/miqt/pluginlib/annotation/HookMethodInherited;
-   * 		hookTiming=Enter|Return
+   * 		annotation="Lcom/miqt/pluginlib/annotation/HookMethodInherited;""
+   * 		hookTiming="Enter|Return"
    * 	}
-   * Generate Time:2021-08-10 15:09:30
+   * Generate Time:2021-08-11 11:24:04
    */
   public static void annotationHookMethodInheritedEnter(Object thisObj, String className,
       String methodName, String argsType, String returnType, Object[] args) {
@@ -70,10 +74,10 @@ public final class HookHandler {
    * This method generate with:
    * 	annotationHookMethodInherited{
    * 		access=-1
-   * 		annotation=Lcom/miqt/pluginlib/annotation/HookMethodInherited;
-   * 		hookTiming=Enter|Return
+   * 		annotation="Lcom/miqt/pluginlib/annotation/HookMethodInherited;""
+   * 		hookTiming="Enter|Return"
    * 	}
-   * Generate Time:2021-08-10 15:09:30
+   * Generate Time:2021-08-11 11:24:04
    */
   public static void annotationHookMethodInheritedReturn(Object returnObj, Object thisObj,
       String className, String methodName, String argsType, String returnType, Object[] args) {
@@ -82,47 +86,87 @@ public final class HookHandler {
 
   /**
    * This method generate with:
-   * 	hook_activity{
-   * 		access=-1
-   * 		superName=android/app/Activity
-   * 		hookTiming=Enter|Return
+   * 	hook_Runnable_run{
+   * 		access=1
+   * 		interfaces="java/lang/Runnable"
+   * 		methodName="run"
+   * 		descriptor="()V"
+   * 		hookTiming="Enter|Return"
    * 	}
-   * Generate Time:2021-08-10 15:09:30
+   * Argument:
+   * Return Type:
+   * 	V
+   * Generate Time:2021-08-11 11:24:04
    */
-  public static void hook_activityEnter(Object thisObj, String className, String methodName,
+  public static void hook_Runnable_runEnter(Object thisObj, String className, String methodName,
       String argsType, String returnType, Object[] args) {
-    //TODO hook_activityEnter empty implementation!;
+    //TODO hook_Runnable_runEnter empty implementation!;
   }
 
   /**
    * This method generate with:
-   * 	hook_activity{
-   * 		access=-1
-   * 		superName=android/app/Activity
-   * 		hookTiming=Enter|Return
+   * 	hook_Runnable_run{
+   * 		access=1
+   * 		interfaces="java/lang/Runnable"
+   * 		methodName="run"
+   * 		descriptor="()V"
+   * 		hookTiming="Enter|Return"
    * 	}
-   * Generate Time:2021-08-10 15:09:30
+   * Argument:
+   * Return Type:
+   * 	V
+   * Generate Time:2021-08-11 11:24:04
    */
-  public static void hook_activityReturn(Object returnObj, Object thisObj, String className,
+  public static void hook_Runnable_runReturn(Object returnObj, Object thisObj, String className,
       String methodName, String argsType, String returnType, Object[] args) {
-    //TODO hook_activityReturn empty implementation!;
+    //TODO hook_Runnable_runReturn empty implementation!;
+  }
+
+  /**
+   * This method generate with:
+   * 	hook_activity_lifeCycle{
+   * 		access=4
+   * 		superName="android/app/Activity"
+   * 		methodName="(onCreate)|(onResume)|(onPause)|(onStart)|(onDestroy)|(onStop)"
+   * 		hookTiming="Enter|Return"
+   * 	}
+   * Generate Time:2021-08-11 11:24:04
+   */
+  public static void hook_activity_lifeCycleEnter(Object thisObj, String className,
+      String methodName, String argsType, String returnType, Object[] args) {
+    //TODO hook_activity_lifeCycleEnter empty implementation!;
+  }
+
+  /**
+   * This method generate with:
+   * 	hook_activity_lifeCycle{
+   * 		access=4
+   * 		superName="android/app/Activity"
+   * 		methodName="(onCreate)|(onResume)|(onPause)|(onStart)|(onDestroy)|(onStop)"
+   * 		hookTiming="Enter|Return"
+   * 	}
+   * Generate Time:2021-08-11 11:24:04
+   */
+  public static void hook_activity_lifeCycleReturn(Object returnObj, Object thisObj,
+      String className, String methodName, String argsType, String returnType, Object[] args) {
+    //TODO hook_activity_lifeCycleReturn empty implementation!;
   }
 
   /**
    * This method generate with:
    * 	hook_onclick{
    * 		access=-1
-   * 		interfaces=android/view/View$OnClickListener
-   * 		methodName=onClick
-   * 		descriptor=(Landroid/view/View;)V
-   * 		hookTiming=Enter|Return
+   * 		interfaces="android/view/View$OnClickListener"
+   * 		methodName="onClick"
+   * 		descriptor="(Landroid/view/View;)V"
+   * 		hookTiming="Enter|Return"
    * 	}
    * Argument:
    * 	Landroid/view/View;
    *
    * Return Type:
    * 	V
-   * Generate Time:2021-08-10 15:09:30
+   * Generate Time:2021-08-11 11:24:04
    */
   public static void hook_onclickEnter(Object thisObj, String className, String methodName,
       String argsType, String returnType, Object[] args) {
@@ -133,20 +177,58 @@ public final class HookHandler {
    * This method generate with:
    * 	hook_onclick{
    * 		access=-1
-   * 		interfaces=android/view/View$OnClickListener
-   * 		methodName=onClick
-   * 		descriptor=(Landroid/view/View;)V
-   * 		hookTiming=Enter|Return
+   * 		interfaces="android/view/View$OnClickListener"
+   * 		methodName="onClick"
+   * 		descriptor="(Landroid/view/View;)V"
+   * 		hookTiming="Enter|Return"
    * 	}
    * Argument:
    * 	Landroid/view/View;
    *
    * Return Type:
    * 	V
-   * Generate Time:2021-08-10 15:09:30
+   * Generate Time:2021-08-11 11:24:04
    */
   public static void hook_onclickReturn(Object returnObj, Object thisObj, String className,
       String methodName, String argsType, String returnType, Object[] args) {
     //TODO hook_onclickReturn empty implementation!;
+  }
+
+  /**
+   * This method generate with:
+   * 	hook_thread_run{
+   * 		access=1
+   * 		superName="java/lang/Thread"
+   * 		methodName="run"
+   * 		descriptor="()V"
+   * 		hookTiming="Enter|Return"
+   * 	}
+   * Argument:
+   * Return Type:
+   * 	V
+   * Generate Time:2021-08-11 11:24:04
+   */
+  public static void hook_thread_runEnter(Object thisObj, String className, String methodName,
+      String argsType, String returnType, Object[] args) {
+    //TODO hook_thread_runEnter empty implementation!;
+  }
+
+  /**
+   * This method generate with:
+   * 	hook_thread_run{
+   * 		access=1
+   * 		superName="java/lang/Thread"
+   * 		methodName="run"
+   * 		descriptor="()V"
+   * 		hookTiming="Enter|Return"
+   * 	}
+   * Argument:
+   * Return Type:
+   * 	V
+   * Generate Time:2021-08-11 11:24:04
+   */
+  public static void hook_thread_runReturn(Object returnObj, Object thisObj, String className,
+      String methodName, String argsType, String returnType, Object[] args) {
+    //TODO hook_thread_runReturn empty implementation!;
   }
 }

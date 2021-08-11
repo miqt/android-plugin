@@ -41,17 +41,7 @@ public class HookMethodPlugin extends BasePlugin<HookMethodExtension> {
         });
     }
 
-    @Override
-    protected void beginTransform(TransformInvocation transformInvocation) {
-        super.beginTransform(transformInvocation);
-        getLogger().log("HookMethodPlugin:start");
-        getLogger().log(getExtension().toString());
-    }
 
-    @Override
-    protected void afterTransform(TransformInvocation transformInvocation) {
-        super.afterTransform(transformInvocation);
-    }
 
     @Override
     public byte[] transform(byte[] classBytes, File classFile) {
@@ -76,7 +66,6 @@ public class HookMethodPlugin extends BasePlugin<HookMethodExtension> {
                 entry.getName().contains(getExtension().handler.replace(".", "/"))) {
             return classBytes;
         }
-        getLogger().log("[jar class]" + jarFile.getName() + ":" + entry.getName());
         //跳过自己的类库
         if(entry.getName().contains("com/miqt/pluginlib/")){
             return classBytes;
