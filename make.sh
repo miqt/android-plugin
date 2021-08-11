@@ -1,5 +1,5 @@
 cd plugin
-#./gradlew base_plugin:gitPull
+./gradlew base_plugin:gitPull
 ./gradlew base_plugin:uploadArchives
 
 #./gradlew auto-trycatch:uploadArchives
@@ -12,7 +12,7 @@ cd plugin
 #./gradlew strmix-plugin:uploadArchives
 #./gradlew strmix-plugin-lib:uploadArchives
 
-#./gradlew base_plugin:publishToGitMaven
+./gradlew base_plugin:publishToGitMaven
 
 get_char()
 {
