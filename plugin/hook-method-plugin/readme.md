@@ -6,6 +6,7 @@
 2. Android 方法耗时，性能统计
 3. 各种拦截器，例如，拦截某方法，在某方法执行前，先判断权限或进行准备工作
 4. 在引用的第三方jar包中追加代码，增加创建线程，文件IO相关的监控等
+5. 查看引用第三方SDK的执行逻辑，例如查看哪些SDK在后台获取位置，imei，频繁执行
 
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
@@ -199,8 +200,8 @@ hook_method {
 
 ## 内置注解
 
-**@HookInfo： ** 输出对应字节码限制条件信息，可复制打印出的对应条件用于Hook同类型方法  
-**@HookMethod： ** 标记hook方法，不需要写hookTargets，可以理解为内置的  
+**@HookInfo：** 输出对应字节码限制条件信息，可复制打印出的对应条件用于Hook同类型方法  
+**@HookMethod：** 标记hook方法，不需要写hookTargets，可以理解为内置的  
 **@HookMethodInherited：** 标记hook方法，有类继承性，不需要写hookTargets，可以理解为内置的  
 **@IgnoreMethodHook：** 标记忽略方法，优先级最高   
 
