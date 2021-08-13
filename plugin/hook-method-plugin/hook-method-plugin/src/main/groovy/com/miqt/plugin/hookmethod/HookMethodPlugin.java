@@ -28,6 +28,9 @@ public class HookMethodPlugin extends BasePlugin<HookMethodExtension> {
     public void apply(@NotNull Project project) {
         super.apply(project);
         ExtensionAware aware = (ExtensionAware) getExtension();
+        if (aware == null) {
+            return;
+        }
         // 创建一个容器
         hookTargets = project.container(HookTarget.class);
         // 将容器添加为 extension

@@ -53,7 +53,10 @@ public abstract class BasePlugin<E extends Extension> extends Transform implemen
     @Override
     public void apply(@NotNull Project project) {
         this.project = project;
-        BaseExtension android = (BaseExtension) project.getExtensions().getByName("android");
+        BaseExtension android = (BaseExtension) project.getExtensions().findByName("android");
+        if (android == null) {
+            return;
+        }
         if (android instanceof AppExtension) {
             isApp = true;
         } else if (android instanceof LibraryExtension) {
