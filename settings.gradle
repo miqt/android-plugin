@@ -1,3 +1,2 @@
 include ':app'
 includeBuild("./plugin")
-rootProject.name = "ASMCode"
