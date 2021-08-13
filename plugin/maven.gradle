@@ -1,6 +1,5 @@
 apply plugin: 'maven'
 
-def git = "git@github.com:miqt/maven.git"
 def localDir = 'E:\\git_maven'
 def maven_version = "0.4.1"
 def maven_groupId = 'com.miqt'
@@ -26,37 +25,39 @@ uploadArchives {
         }
     }
 }
-
-task gitClone(group: 'upload') {
-    if (!new File(localDir).exists()) {
-        ("git clone " + git + " " + localDir).execute([], new File(localDir).getParentFile())
-    }
-}
-
-task gitPull(group: 'upload', type: Exec) {
-    workingDir(new File(localDir))
-    commandLine 'git', 'pull'
-}
-task gitAdd(group: 'upload', type: Exec) {
-    workingDir(new File(localDir))
-    commandLine 'git', 'add', '.'
-}
-task gitCommit(group: 'upload', type: Exec) {
-    workingDir(new File(localDir))
-    commandLine 'git', 'commit', '-m', 'update version:' + maven_version
-}
-task gitPush(group: 'upload', type: Exec) {
-    workingDir(new File(localDir))
-    commandLine 'git', 'push', 'origin'
-}
-task publishToGitMaven(group: 'upload', type: Exec) {
-    workingDir(new File(localDir))
-    commandLine 'git', 'push', 'gitee'
-}
-
-//gitPull.dependsOn gitClone
-//uploadArchives.dependsOn gitPull
-//gitAdd.dependsOn uploadArchives
-gitCommit.dependsOn gitAdd
-gitPush.dependsOn gitCommit
-publishToGitMaven.dependsOn gitPush
+//
+//def git = "git@github.com:miqt/maven.git"
+//
+//task gitClone(group: 'upload') {
+//    if (!new File(localDir).exists()) {
+//        ("git clone " + git + " " + localDir).execute([], new File(localDir).getParentFile())
+//    }
+//}
+//
+//task gitPull(group: 'upload', type: Exec) {
+//    workingDir(new File(localDir))
+//    commandLine 'git', 'pull'
+//}
+//task gitAdd(group: 'upload', type: Exec) {
+//    workingDir(new File(localDir))
+//    commandLine 'git', 'add', '.'
+//}
+//task gitCommit(group: 'upload', type: Exec) {
+//    workingDir(new File(localDir))
+//    commandLine 'git', 'commit', '-m', 'update version:' + maven_version
+//}
+//task gitPush(group: 'upload', type: Exec) {
+//    workingDir(new File(localDir))
+//    commandLine 'git', 'push', 'origin'
+//}
+//task publishToGitMaven(group: 'upload', type: Exec) {
+//    workingDir(new File(localDir))
+//    commandLine 'git', 'push', 'gitee'
+//}
+//
+////gitPull.dependsOn gitClone
+////uploadArchives.dependsOn gitPull
+////gitAdd.dependsOn uploadArchives
+//gitCommit.dependsOn gitAdd
+//gitPush.dependsOn gitCommit
+//publishToGitMaven.dependsOn gitPush
