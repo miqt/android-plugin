@@ -3,7 +3,13 @@ buildscript {
     ext.kotlin_version = "1.3.72"
     repositories {
         google()
-        jcenter()
+        maven {
+            url 'https://maven.aliyun.com/repository/public/'
+        }
+        mavenLocal()
+        mavenCentral()
+        maven { url 'https://raw.githubusercontent.com/miqt/maven/master' }
+        maven { url 'https://gitee.com/miqt/maven/raw/master' }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.1.1"
@@ -19,7 +25,13 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        maven {
+            url 'https://maven.aliyun.com/repository/public/'
+        }
+        mavenLocal()
+        mavenCentral()
+        maven { url 'https://raw.githubusercontent.com/miqt/maven/master' }
+        maven { url 'https://gitee.com/miqt/maven/raw/master' }
     }
     tasks.withType(Javadoc) {
         options.addStringOption('Xdoclint:none', '-quiet')
