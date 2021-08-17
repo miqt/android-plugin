@@ -9,8 +9,8 @@ cd plugin
 #
 #./gradlew sample-plugin:uploadArchives
 
-#./gradlew strmix-plugin:uploadArchives
-#./gradlew strmix-plugin-lib:uploadArchives
+./gradlew strmix-plugin:uploadArchives
+./gradlew strmix-plugin-lib:uploadArchives
 
 ./gradlew base_plugin:publishToGitMaven
 
