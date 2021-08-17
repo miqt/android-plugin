@@ -40,6 +40,14 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+       runOnUiThread(() -> {
+           Toast.makeText(this, "xxx", Toast.LENGTH_SHORT).show();
+       });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
         new Thread(){
             @HookInfo
             @Override
@@ -47,19 +55,6 @@ public class MainActivity extends Activity {
                 super.run();
             }
         }.start();
-
-        new Runnable(){
-            @HookInfo
-            @Override
-            public void run() {
-
-            }
-        };
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
     }
 
     @Override

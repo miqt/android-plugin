@@ -21,21 +21,18 @@ hook_method {
         }
         hook_activity_lifeCycle {
             //<-- 所有activity生命周期方法
-            access = 4
             superName = "android/app/Activity"
             methodName = "(onCreate)|(onResume)|(onPause)|(onStart)|(onDestroy)|(onStop)"
             hookTiming = "Enter|Return"
         }
         hook_thread_run{
             //<-- 线程run方法
-            access = 1
             superName = "java/lang/Thread"
             methodName = "run"
             descriptor = "()V"
         }
         hook_Runnable_run{
             //<-- 线程run方法
-            access = 1
             interfaces = "java/lang/Runnable"
             methodName = "run"
             descriptor = "()V"

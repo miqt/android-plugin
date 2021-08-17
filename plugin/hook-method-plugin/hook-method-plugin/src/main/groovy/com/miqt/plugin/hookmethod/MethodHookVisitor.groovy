@@ -123,7 +123,6 @@ class MethodHookVisitor extends ClassVisitor {
                 def lambdaMethodName = bootstrapMethodArguments[1].name//lambda$xxx$0
                 def lambdaOwner = bootstrapMethodArguments[1].owner//com/asm/code/MainActivity
                 def lambdaDescriptor = bootstrapMethodArguments[1].descriptor
-//(Landroid/view/View;)V
                 def lambdaInterface = Type.getReturnType(methodDescriptor).internalName
                 lambdaMethod.put(lambdaMethodName, new LambdaHolder(methodName, lambdaOwner,
                         lambdaDescriptor, lambdaInterface))
@@ -143,7 +142,7 @@ class MethodHookVisitor extends ClassVisitor {
                             }
                             String[] face = [hd.lambdaInterface] as String[]
                             target = isMatch(access,face , "", hd.lambdaOwner,
-                                    hd.methodName, hd.lambdaDescriptor, null, classAnnotation,
+                                    hd.methodName, hd.lambdaDescriptor, [], classAnnotation,
                                     signature, exceptions, HookTarget.Enter, isIgnoreMethodHook)
                         }
                     }
@@ -184,7 +183,7 @@ class MethodHookVisitor extends ClassVisitor {
                         }
                         String[] face = [hd.lambdaInterface] as String[]
                         target = isMatch(access,face , null, hd.lambdaOwner,
-                                hd.methodName, hd.lambdaDescriptor, null, classAnnotation,
+                                hd.methodName, hd.lambdaDescriptor, [], classAnnotation,
                                 signature, exceptions, HookTarget.Return, isIgnoreMethodHook)
                     }
                 }
