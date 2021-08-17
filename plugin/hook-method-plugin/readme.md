@@ -109,7 +109,7 @@ public class MainActivity extends Activity {
 
     ```groovy
     dependencies {
-        classpath 'com.miqt:hook-method-plugin:0.4.1'
+        classpath 'com.miqt:hook-method-plugin:0.4.2'
     }
     ```
 
@@ -136,7 +136,7 @@ public class MainActivity extends Activity {
 
     ```groovy
     dependencies {
-        implementation 'com.miqt:hook-method-lib:0.4.1'
+        implementation 'com.miqt:hook-method-lib:0.4.2'
     }
     ```
 
@@ -269,6 +269,11 @@ I/MethodHookHandler: └com/asm/code/MainActivity@efc0c18.onPause():[0]
 I/MethodHookHandler: ┌com/asm/code/MainActivity@efc0c18.onStop():[main]
 I/MethodHookHandler: └com/asm/code/MainActivity@efc0c18.onStop():[0]
 ```
+
+## version list
+
+- 2021年8月17日 v0.4.2 lambda 表达式支持
+- 2021年8月08日 v0.4.1 支持自动生成插桩实现类
 
 ## 致谢
 
