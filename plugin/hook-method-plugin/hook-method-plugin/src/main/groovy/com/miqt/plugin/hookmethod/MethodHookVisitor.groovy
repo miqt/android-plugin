@@ -15,6 +15,7 @@ class MethodHookVisitor extends ClassVisitor {
     private Project project
     private HookMethodPlugin plugin
     private boolean isIgnoreMethodHook = false
+    private Map<String, LambdaHolder> lambdaMethod = new HashMap<>()
 
     public MethodHookVisitor(ClassVisitor classVisitor, HookMethodPlugin plugin) {
         super(Opcodes.ASM5, classVisitor)
@@ -56,7 +57,7 @@ class MethodHookVisitor extends ClassVisitor {
         if (methodAnnotation.contains("Lcom/miqt/pluginlib/annotation/HookInfo;")
                 || classAnnotation.contains("Lcom/miqt/pluginlib/annotation/HookInfo;")) {
             def hookinfo =
-                    "\n[HookInfo]:"+
+                    "\n[HookInfo]:" +
                             "\n\taccess = $access" +
                             "\n\tinterfaces = $interfaces" +
                             "\n\tsuperName = \"$superName" +
@@ -117,27 +118,55 @@ class MethodHookVisitor extends ClassVisitor {
             }
 
             @Override
+            void visitInvokeDynamicInsn(String methodName, String methodDescriptor, Handle bootstrapMethodHandle, Object... bootstrapMethodArguments) {
+                super.visitInvokeDynamicInsn(methodName, methodDescriptor, bootstrapMethodHandle, bootstrapMethodArguments)
+                def lambdaMethodName = bootstrapMethodArguments[1].name//lambda$xxx$0
+                def lambdaOwner = bootstrapMethodArguments[1].owner//com/asm/code/MainActivity
+                def lambdaDescriptor = bootstrapMethodArguments[1].descriptor
+//(Landroid/view/View;)V
+                def lambdaInterface = Type.getReturnType(methodDescriptor).internalName
+                lambdaMethod.put(lambdaMethodName, new LambdaHolder(methodName, lambdaOwner,
+                        lambdaDescriptor, lambdaInterface))
+            }
+
+            @Override
             protected synchronized void onMethodEnter() {
-                HookTarget target = isMatch(access, interfaces, superName, className,
-                        name, descriptor, methodAnnotation, classAnnotation,
-                        signature, exceptions, HookTarget.Enter, isIgnoreMethodHook)
-                if (target == null) {
-                    return
+                try {
+                    HookTarget target = isMatch(access, interfaces, superName, className,
+                            name, descriptor, methodAnnotation, classAnnotation,
+                            signature, exceptions, HookTarget.Enter, isIgnoreMethodHook)
+                    if (target == null) {
+                        if (!lambdaMethod.isEmpty()) {
+                            LambdaHolder hd = lambdaMethod.get(name)
+                            if (hd == null) {
+                                return
+                            }
+                            String[] face = [hd.lambdaInterface] as String[]
+                            target = isMatch(access,face , "", hd.lambdaOwner,
+                                    hd.methodName, hd.lambdaDescriptor, null, classAnnotation,
+                                    signature, exceptions, HookTarget.Enter, isIgnoreMethodHook)
+                        }
+                    }
+                    if (target == null) {
+                        return
+                    }
+                    getArgs()
+                    mv.visitMethodInsn(INVOKESTATIC, config.handler.replace(".", "/"),
+                            target.getEnterMethodName(),
+                            "(" +
+                                    "Ljava/lang/Object;" +
+                                    "Ljava/lang/String;" +
+                                    "Ljava/lang/String;" +
+                                    "Ljava/lang/String;" +
+                                    "Ljava/lang/String;" +
+                                    "[Ljava/lang/Object;" +
+                                    ")V",
+                            false)
+                    plugin.getLogger().log("\t[MethodEnter]" + className + "." + name +
+                            "\n\t\t插桩:" + config.handler + "." + target.getEnterMethodName())
+                } catch (Throwable e) {
+                    plugin.getLogger().log(e)
                 }
-                getArgs()
-                mv.visitMethodInsn(INVOKESTATIC,  config.handler.replace(".","/"),
-                        target.getEnterMethodName(),
-                        "(" +
-                                "Ljava/lang/Object;" +
-                                "Ljava/lang/String;" +
-                                "Ljava/lang/String;" +
-                                "Ljava/lang/String;" +
-                                "Ljava/lang/String;" +
-                                "[Ljava/lang/Object;" +
-                                ")V",
-                        false)
-                plugin.getLogger().log("\t[MethodEnter]" + className + "." + name +
-                        "\n\t\t插桩:" + config.handler + "." + target.getEnterMethodName())
 
                 super.onMethodEnter()
             }
@@ -147,6 +176,18 @@ class MethodHookVisitor extends ClassVisitor {
                 HookTarget target = isMatch(access, interfaces, superName, className,
                         name, descriptor, methodAnnotation, classAnnotation,
                         signature, exceptions, HookTarget.Return, isIgnoreMethodHook)
+                if (target == null) {
+                    if (!lambdaMethod.isEmpty()) {
+                        LambdaHolder hd = lambdaMethod.get(name)
+                        if (hd == null) {
+                            return
+                        }
+                        String[] face = [hd.lambdaInterface] as String[]
+                        target = isMatch(access,face , null, hd.lambdaOwner,
+                                hd.methodName, hd.lambdaDescriptor, null, classAnnotation,
+                                signature, exceptions, HookTarget.Return, isIgnoreMethodHook)
+                    }
+                }
                 if (target == null) {
                     return
                 }

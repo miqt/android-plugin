@@ -1,6 +1,6 @@
 package com.miqt.plugin.strmix
 
-import com.miqt.asm.method_hook.Extension;
+import com.miqt.asm.method_hook.Extension
 import org.json.simple.JSONObject
 
 class Config extends Extension{
@@ -14,6 +14,13 @@ class Config extends Extension{
 
     Config() {
         injectJar = true
+    }
+
+    synchronized String getKey() {
+        if (key == null || key == "") {
+            key = UUID.randomUUID()
+        }
+        return key
     }
 
     @Override

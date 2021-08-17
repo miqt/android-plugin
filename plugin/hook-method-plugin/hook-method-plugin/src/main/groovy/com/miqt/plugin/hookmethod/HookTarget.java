@@ -1,5 +1,6 @@
 package com.miqt.plugin.hookmethod;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -150,9 +151,15 @@ public class HookTarget {
             return false;
         }
         if (!isEmpty(this.annotation)) {
-            if (!methodAnnotation.contains(this.annotation)
-                    && !classAnnotation.contains(this.annotation))
+            if (classAnnotation == null) {
+                classAnnotation = new ArrayList<>();
+            }
+            if (methodAnnotation == null) {
+                methodAnnotation = new ArrayList<>();
+            }
+            if (!classAnnotation.contains(annotation) && !methodAnnotation.contains(annotation)) {
                 return false;
+            }
         }
         if (!isEmpty(this.signature) && !this.signature.equals(signature)) {
             return false;

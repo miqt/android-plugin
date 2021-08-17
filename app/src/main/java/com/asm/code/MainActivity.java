@@ -19,11 +19,21 @@ public class MainActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "onClick", Toast.LENGTH_SHORT).show();
-            }
+        findViewById(R.id.button).setOnClickListener(v -> Toast.makeText(MainActivity.this, "onClick", Toast.LENGTH_SHORT).show());
+    }
+    public static void ccc(View view){
+        view.setOnClickListener(v -> {
+            "aa".toString().getBytes();
+        });
+    }
+    private  static void aaa(View view){
+        view.setOnClickListener(v -> {
+            "aa".toString().getBytes();
+        });
+    }
+    private void bbb(View view){
+        view.setOnClickListener(v -> {
+            "aa".toString().getBytes();
         });
     }
 
