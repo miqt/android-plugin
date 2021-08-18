@@ -11,7 +11,8 @@ import java.lang.String;
  * Its function is to receive the forwarding of the intercepted method. 
  * You can add processing logic to the generated method.
  * Have fun!
- * Each time you add a hook point, manually merge the new method in the latest ‘xxx.java.new’ file after rebuild
+ * Each time you add a hook point, manually merge the new method in the
+ * latest ‘xxx.java.new’ file after rebuild
  *
  * @see <a href="https://github.com/miqt/android-plugin">miqt/android-plugin</a>
  * @author miqingtang@163.com
@@ -21,10 +22,14 @@ import java.lang.String;
  * 	annotationHookMethodReturn
  * 	annotationHookMethodInheritedEnter
  * 	annotationHookMethodInheritedReturn
- * 	hook_activityEnter
- * 	hook_activityReturn
+ * 	hook_Runnable_runEnter
+ * 	hook_Runnable_runReturn
+ * 	hook_activity_lifeCycleEnter
+ * 	hook_activity_lifeCycleReturn
  * 	hook_onclickEnter
  * 	hook_onclickReturn
+ * 	hook_thread_runEnter
+ * 	hook_thread_runReturn
  */
 public final class HookHandler {
   static IMethodHookHandler methodHookHandler = new MethodHookPrint("HookHandler");

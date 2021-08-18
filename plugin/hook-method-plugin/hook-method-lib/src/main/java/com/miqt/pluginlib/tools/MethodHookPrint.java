@@ -31,12 +31,15 @@ public class MethodHookPrint implements IMethodHookHandler {
                 "┌" + (thisObj == null ? className : className + "@" + Integer.toHexString(System.identityHashCode(thisObj))) +
                 "." + methodName +
                 "():[" + Thread.currentThread().getName() + "]";
-        Log.i("MethodHookHandler", value);
+        Log.i(tag == null ? "MethodHookHandler" : tag, value);
         queue.push(SystemClock.elapsedRealtime());
     }
 
     @Override
     public void onMethodReturn(Object returnObj, Object thisObj, String className, String methodName, String argsType, String returnType, Object... args) {
+        String[] strings = className.split("/");
+        StackTraceElement element = Thread.currentThread().getStackTrace()[4];
+        String linkFile = "(" + strings[strings.length-1] + ".java:" + element.getLineNumber() + ")";
         Stack<Long> queue = local.get();
         assert queue != null;
         Long time = queue.pop();
@@ -45,16 +48,17 @@ public class MethodHookPrint implements IMethodHookHandler {
             String value = getSpace(queue.size()) +
                     "└" + (thisObj == null ? className : className + "@" + Integer.toHexString(System.identityHashCode(thisObj))) +
                     "." + methodName +
-                    "():[" + duc + "]";
+                    "():[" + duc + "]"+linkFile;
+
 
             if (duc >= 1000) {
-                Log.e("MethodHookHandler", value);
+                Log.e(tag == null ? "MethodHookHandler" : tag, value);
             } else if (duc >= 600) {
-                Log.w("MethodHookHandler", value);
+                Log.w(tag == null ? "MethodHookHandler" : tag, value);
             } else if (duc >= 300) {
-                Log.d("MethodHookHandler", value);
+                Log.d(tag == null ? "MethodHookHandler" : tag, value);
             } else {
-                Log.i("MethodHookHandler", value);
+                Log.i(tag == null ? "MethodHookHandler" : tag, value);
             }
         }
     }
