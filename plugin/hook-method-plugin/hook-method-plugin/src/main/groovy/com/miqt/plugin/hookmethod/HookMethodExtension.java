@@ -1,6 +1,9 @@
-package com.miqt.plugin.hookmethod
+package com.miqt.plugin.hookmethod;
 
-import com.miqt.asm.method_hook.Extension
+import com.miqt.asm.method_hook.Extension;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HookMethodExtension extends Extension {
     public List<HookTarget> hookTargets = new ArrayList<>();
