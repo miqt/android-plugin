@@ -10,4 +10,7 @@ dependencies {
     implementation localGroovy()
     implementation 'com.android.tools.build:gradle:3.6.3'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    //用于动态生成java代码的类库
+    implementation 'com.squareup:javapoet:1.13.0'
+    implementation 'com.google.code.gson:gson:2.8.7'
 }

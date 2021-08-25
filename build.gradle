@@ -12,7 +12,7 @@ buildscript {
         maven { url 'https://gitee.com/miqt/maven/raw/master' }
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.1.1"
+        classpath 'com.android.tools.build:gradle:4.2.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -23,6 +23,7 @@ plugins {
     id "hook-method-plugin" //apply false
     id "AutoTryCatch-plugin" //apply false
     id "com.miqt.plugin.strmix" //apply false
+    id "jiagu-plugin" //apply false
 }
 
 allprojects {

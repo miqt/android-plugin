@@ -3,6 +3,7 @@ include ':base_plugin'
 include ':sample-plugin'
 
 include ':auto-trycatch'
+include ':jiagu-plugin'
 
 include ':hook-method-plugin'
 project(':hook-method-plugin').projectDir = new File('hook-method-plugin/hook-method-plugin')

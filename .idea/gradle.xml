@@ -14,6 +14,7 @@
                   <project path="$PROJECT_DIR$/plugin/base_plugin" />
                   <project path="$PROJECT_DIR$/plugin/hook-method-plugin/hook-method-lib" />
                   <project path="$PROJECT_DIR$/plugin/hook-method-plugin/hook-method-plugin" />
+                  <project path="$PROJECT_DIR$/plugin/jiagu-plugin" />
                   <project path="$PROJECT_DIR$/plugin/sample-plugin" />
                   <project path="$PROJECT_DIR$/plugin/strmix-plugin/strmix-plugin" />
                   <project path="$PROJECT_DIR$/plugin/strmix-plugin/strmix-plugin-lib" />
@@ -36,6 +37,7 @@
             <option value="$PROJECT_DIR$/plugin/base_plugin" />
             <option value="$PROJECT_DIR$/plugin/hook-method-plugin/hook-method-lib" />
             <option value="$PROJECT_DIR$/plugin/hook-method-plugin/hook-method-plugin" />
+            <option value="$PROJECT_DIR$/plugin/jiagu-plugin" />
             <option value="$PROJECT_DIR$/plugin/sample-plugin" />
             <option value="$PROJECT_DIR$/plugin/strmix-plugin/strmix-plugin" />
             <option value="$PROJECT_DIR$/plugin/strmix-plugin/strmix-plugin-lib" />

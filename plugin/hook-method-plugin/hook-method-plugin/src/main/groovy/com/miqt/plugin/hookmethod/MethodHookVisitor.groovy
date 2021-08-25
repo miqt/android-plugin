@@ -18,7 +18,7 @@ class MethodHookVisitor extends ClassVisitor {
     private Map<String, LambdaHolder> lambdaMethod = new HashMap<>()
 
     public MethodHookVisitor(ClassVisitor classVisitor, HookMethodPlugin plugin) {
-        super(Opcodes.ASM5, classVisitor)
+        super(Opcodes.ASM6, classVisitor)
         this.config = plugin.getExtension()
         this.project = plugin.getProject()
         this.plugin = plugin;

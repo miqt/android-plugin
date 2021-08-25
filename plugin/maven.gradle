@@ -1,7 +1,7 @@
 apply plugin: 'maven'
 
 def localDir = 'E:\\git_maven'
-def maven_version = "0.4.2"
+def maven_version = "0.4.4"
 def maven_groupId = 'com.miqt'
 
 //下面的version和group必须有，gradle打包的pom文件依赖这个版本号和group

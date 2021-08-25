@@ -45,6 +45,12 @@ hook_method {
 //    injectJar = false
 //    enable = true
 //}
+apply plugin: 'com.miqt.plugin.jiagu'
+jiagu_plugin {
+    buildLog = true
+    injectJar = true
+    enable = true
+}
 //apply plugin: 'com.miqt.plugin.strmix'
 //str_mix {
 //    buildLog = true

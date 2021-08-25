@@ -219,7 +219,7 @@ public abstract class BasePlugin<E extends Extension> extends Transform implemen
             } else {
                 status = Status.ADDED;
             }
-            logger.log("[JarInput]" + file.getAbsolutePath() + " status:" + status);
+//            logger.log("[JarInput]" + file.getAbsolutePath() + " status:" + status);
             //根据是否变化决定是否更新
             switch (status) {
                 case NOTCHANGED:
@@ -273,7 +273,7 @@ public abstract class BasePlugin<E extends Extension> extends Transform implemen
                 jarOutputStream.putNextEntry(outJarEntry);
                 byte[] modifiedClassBytes = null;
                 byte[] sourceClassBytes = IOUtils.toByteArray(jarFile.getInputStream(entry));
-                if (name.endsWith(".class")) {
+                if (canTransForm(name)) {
                     try {
                         modifiedClassBytes = transformJar(sourceClassBytes, file, entry);
                     } catch (Throwable e) {
@@ -298,6 +298,18 @@ public abstract class BasePlugin<E extends Extension> extends Transform implemen
 
     }
 
+    public boolean canTransForm(String name){
+        if (getInputTypes()==null||getInputTypes().isEmpty())
+            return false;
+        if(getInputTypes().size()==1&&getInputTypes().equals(TransformManager.CONTENT_CLASS)){
+            //如果只关注class，则过滤
+            return name.endsWith(".class");
+        }else{
+            //关注除了class其他的，由插件自行判断
+            return true;
+        }
+    }
+
     public boolean isRemoveJarEntry(JarFile jarFile, JarEntry entry) {
         return false;
     }
@@ -316,7 +328,7 @@ public abstract class BasePlugin<E extends Extension> extends Transform implemen
                     String destDirPath = dest.getAbsolutePath();
                     String destFilePath = file.getAbsolutePath().replace(srcDirPath, destDirPath);
                     File destFile = new File(destFilePath);
-                    logger.log("[DirectoryInput]" + file.getAbsolutePath() + " status:" + status.name());
+//                    logger.log("[DirectoryInput]" + file.getAbsolutePath() + " status:" + status.name());
                     switch (status) {
                         case NOTCHANGED:
                             break;
@@ -373,7 +385,7 @@ public abstract class BasePlugin<E extends Extension> extends Transform implemen
 
     public final void weaveSingleClassToFile(File inputFile, File outputFile) throws IOException {
         waitableExecutor.execute(() -> {
-            if (!isNotRun && inputFile.getName().endsWith(".class")) {
+            if (!isNotRun &&canTransForm(inputFile.getName())) {
                 FileUtils.touch(outputFile);
                 byte[] classByte = FileUtils.readFileToByteArray(inputFile);
                 classByte = transform(classByte, inputFile);
