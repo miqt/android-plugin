@@ -14,8 +14,8 @@ import java.util.Map;
  */
 final class ClassUtils {
 
-    private static Map<Integer, Integer> storeOps = new HashMap<Integer, Integer>();
-    private static Map<Integer, Integer> loadOps = new HashMap<Integer, Integer>();
+    private static final Map<Integer, Integer> storeOps = new HashMap<Integer, Integer>();
+    private static final Map<Integer, Integer> loadOps = new HashMap<Integer, Integer>();
 
     static {
         storeOps.put(Opcodes.ISTORE, 1);

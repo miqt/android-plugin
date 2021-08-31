@@ -178,10 +178,7 @@ public class HookTarget {
             }
         }
 
-        if (!this.hookTiming.contains(hookTiming)) {
-            return false;
-        }
-        return true;
+        return this.hookTiming.contains(hookTiming);
     }
 
     private boolean isEmpty(String value) {

@@ -6,26 +6,26 @@ import org.objectweb.asm.commons.AdviceAdapter
 
 class MethodHookVisitor extends ClassVisitor {
 
-    private String[] interfaces;//继承类
-    private String superName;//所在父类
-    private String className;//方法所在的类名
+    private String[] interfaces//继承类
+    private String superName//所在父类
+    private String className//方法所在的类名
 
-    private List<String> classAnnotation = new ArrayList<>();//方法注释
+    private List<String> classAnnotation = new ArrayList<>()//方法注释
     private HookMethodExtension config
     private Project project
     private HookMethodPlugin plugin
     private boolean isIgnoreMethodHook = false
     private Map<String, LambdaHolder> lambdaMethod = new HashMap<>()
 
-    public MethodHookVisitor(ClassVisitor classVisitor, HookMethodPlugin plugin) {
+    MethodHookVisitor(ClassVisitor classVisitor, HookMethodPlugin plugin) {
         super(Opcodes.ASM6, classVisitor)
         this.config = plugin.getExtension()
         this.project = plugin.getProject()
-        this.plugin = plugin;
+        this.plugin = plugin
     }
 
     @Override
-    public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
+    void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
         super.visit(version, access, name, signature, superName, interfaces)
         className = name
         this.interfaces = interfaces
@@ -41,7 +41,7 @@ class MethodHookVisitor extends ClassVisitor {
         return super.visitAnnotation(descriptor, visible)
     }
 
-    HookTarget isMatch(int access = -1,//方法的访问权限
+    HookTarget isMatch(int access,//方法的访问权限
                        String[] interfaces,//继承类
                        String superName,//所在父类
                        String className,//方法所在的类名
@@ -76,7 +76,7 @@ class MethodHookVisitor extends ClassVisitor {
         if (isIgnoreMethodHook) {
             return null
         }
-        List<HookTarget> targets = plugin.getExtension().hookTargets;
+        List<HookTarget> targets = plugin.getExtension().hookTargets
         for (i in 0..<targets.size()) {
             if (targets.get(i).isMatch(
                     access, interfaces, superName, className,
@@ -107,7 +107,7 @@ class MethodHookVisitor extends ClassVisitor {
         def mv = cv.visitMethod(access, name, descriptor, signature, exceptions)
         mv = new AdviceAdapter(Opcodes.ASM5, mv, access, name, descriptor) {
 
-            private List<String> methodAnnotation = new ArrayList<>();//方法注释
+            private List<String> methodAnnotation = new ArrayList<>()//方法注释
             @Override
             AnnotationVisitor visitAnnotation(String desc, boolean visible) {
                 if (descriptor == "Lcom/miqt/pluginlib/annotation/IgnoreMethodHook;") {
@@ -192,7 +192,7 @@ class MethodHookVisitor extends ClassVisitor {
                 }
                 //有返回值的装载返回值参数，无返回值的装载null
                 if (opcode >= IRETURN && opcode < RETURN) {
-                    if (returnType.sort == Type.LONG || returnType.sort == Type.DOUBLE) {
+                    if (returnType.getSort() == Type.LONG || returnType.getSort() == Type.DOUBLE) {
                         mv.visitInsn(DUP2)
                     } else {
                         mv.visitInsn(DUP)
@@ -247,12 +247,12 @@ class MethodHookVisitor extends ClassVisitor {
                 mv.visitLdcInsn(className)//className
                 mv.visitLdcInsn(name)//methodbName
                 mv.visitLdcInsn(getArgsType())//argsTypes
-                mv.visitLdcInsn(returnType.className)//returntype
+                mv.visitLdcInsn(returnType.getClassName())//returntype
 
                 getICONST(argsTypes == null ? 0 : argsTypes.length)
                 mv.visitTypeInsn(ANEWARRAY, "java/lang/Object")
                 if (argsTypes != null) {
-                    def valLen = 0
+                    int valLen = 0
                     for (int i = 0; i < argsTypes.length; i++) {
                         mv.visitInsn(DUP)
                         getICONST(i)
@@ -337,7 +337,7 @@ class MethodHookVisitor extends ClassVisitor {
                 StringBuilder b = new StringBuilder()
                 b.append('[')
                 for (int i = 0; ; i++) {
-                    b.append(String.valueOf(argsTypes[i].className))
+                    b.append(String.valueOf(argsTypes[i].getClassName()))
                     if (i == iMax)
                         return b.append(']').toString()
                     b.append(", ")
