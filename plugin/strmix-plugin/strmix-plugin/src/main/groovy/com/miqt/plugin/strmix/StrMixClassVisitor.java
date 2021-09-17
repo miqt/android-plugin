@@ -18,6 +18,7 @@ import java.util.List;
 public class StrMixClassVisitor extends ClassVisitor {
 
     private static final String IGNORE_ANNOTATION = "Lcom/miqt/strmixlib/annotation/IgnoreStrMix;";
+    private static final String MIX_ANNOTATION = "Lcom/miqt/strmixlib/annotation/StrMix;";
     private String mFogClassName;
 
     private boolean isClInitExists;
@@ -31,6 +32,7 @@ public class StrMixClassVisitor extends ClassVisitor {
     private final String mKey;
 
     private boolean mIgnoreClass;
+    private boolean mixAnnotation;
     private Config config;
     private Project project;
 
@@ -51,7 +53,12 @@ public class StrMixClassVisitor extends ClassVisitor {
 
     @Override
     public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
-        mIgnoreClass = IGNORE_ANNOTATION.equals(desc);
+        if (IGNORE_ANNOTATION.equals(desc)){
+            mIgnoreClass = true;
+        }
+        if (MIX_ANNOTATION.equals(desc)){
+            mixAnnotation = true;
+        }
         return super.visitAnnotation(desc, visible);
     }
 
